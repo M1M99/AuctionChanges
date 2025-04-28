@@ -26,7 +26,6 @@ import AboutPage from './Components/Page/AboutPage';
 
 
 
-// Button styles for the link
 const button = {
     backgroundColor: "#0cdcf7",
     borderRadius: "10px",

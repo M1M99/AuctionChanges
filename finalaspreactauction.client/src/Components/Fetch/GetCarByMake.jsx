@@ -5,6 +5,7 @@ import Header from "./../Page/Header";
 import GetPP from "./GetPricePerformanceCars";
 import Footer from "../Page/Footer";
 import Footer1 from "../../Components/Example/Example11";
+import { useNavigate } from 'react-router-dom';
 
 const GetCarByMake = () => {
     const { id } = useParams();
@@ -12,7 +13,6 @@ const GetCarByMake = () => {
     const [brandName, setBrandName] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
     useEffect(() => {
         if (!id) {
             setError("No makeId provided");
@@ -37,6 +37,11 @@ const GetCarByMake = () => {
 
         fetchData();
     }, [id]);
+    const navigate = useNavigate();
+
+    const handleCarClick = (carId) => {
+        navigate(`/car/${carId}`)
+    };
 
     if (loading) {
         return (
@@ -75,9 +80,9 @@ const GetCarByMake = () => {
                             {cars.map((car) => (
                                 <div
                                     key={car.id}
-                                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
                                 >
-                                    <div className="aspect-w-16 aspect-h-9">
+                                    <div className="aspect-w-16 aspect-h-9" onClick={() => { handleCarClick(car.id) }}>
                                         <img
                                             src={car.imageUrl || "https://via.placeholder.com/400x300?text=No+Image"}
                                             alt={`${brandName} ${car.id}`}

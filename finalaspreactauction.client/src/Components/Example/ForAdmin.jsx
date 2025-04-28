@@ -160,9 +160,13 @@ function ForAdmin() {
         setCurrentPage(page);
     };
 
+    const getCarById = (carId) => {
+        navigate(`/car/${carId}`)
+    }
+
     return (
         <section>
-            <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+            <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 rounded" style={{ backgroundColor:"#A7C7E7"} }>
                 <header>
                     <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">Car Collection</h2>
                     <p className="mt-4 max-w-md text-gray-500">
@@ -183,6 +187,7 @@ function ForAdmin() {
                                                 src={res.imageUrl}
                                                 alt={res.modelName}
                                                 className="w-full h-64 object-cover cursor-pointer"
+                                                onClick={() => getCarById(res.id)}
                                             />
                                             <div className="p-4">
                                                 <h5 className="text-lg font-semibold">

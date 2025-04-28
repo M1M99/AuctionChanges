@@ -33,6 +33,13 @@
     width: 100%
 }
 
+.updateTitle{
+    font-family:"Roboto"
+}
+
+#perfect:hover {
+    background-color: #1d3557 
+}
 
 .ui-bookmark {
     --icon-size: 24px;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Loader from './LoadingForAI';
 
 const ChatBotWithAI = () => {
     const [inputValue, setInputValue] = useState('');
@@ -24,7 +25,7 @@ const ChatBotWithAI = () => {
                 },
                 {
                     headers: {
-                        Authorization: `Bearer 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`, // OpenRouter API key
+                        Authorization: `Bearer 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`, // OpenRouter API key
                         'Content-Type': 'application/json',
                     },
                 }
@@ -105,7 +106,7 @@ const ChatBotWithAI = () => {
                 <span>More</span>
             </div>
             <div style={{ marginTop: 20 }}>
-                {loading ? 'Waiting For An Answer...' : response && < p > <h3>Answer : </h3>{response}</p>}
+                {loading ? /*'Waiting For An Answer...'*/ <Loader/>: response && < p > <h3>Answer : </h3>{response}</p>}
             </div>
         </div>
     );
