@@ -23,7 +23,10 @@ import Footer from './Components/Example/Example11';
 import { jwtDecode } from "jwt-decode";
 import { Navigate } from 'react-router-dom';
 import AboutPage from './Components/Page/AboutPage';
-
+import { AuctionProvider } from './Components/Auction/AuctionContext';
+import BiddingInterface from './Components/Auction/BidPage';
+import VehicleGallery from './Components/Auction/VehicleGallery';
+import Header1, { AuctionsPage, DashboardPage, FavoritesPage, LoginPage } from './Components/Example/Head';
 
 
 const button = {
@@ -61,14 +64,38 @@ function AppRoutes() {
     if (userRole === null) {
         return <div>Loading...</div>;
     }
-    const isAdmin = userRole ==='Admin';
+    const isAdmin = userRole === 'Admin';
     const showFooter = location.pathname !== "/login" && location.pathname !== "/404" && location.pathname !== "*";
 
     return (
+            //<Header1 adminName="arif">
+            //    <Routes>
+            //        <Route path="/" element={<App />} />
+            //        <Route path="/login" element={<LoginPage />} />
+            //        <Route path="/auctions" element={<AuctionsPage />} />
+            //        <Route path="/about" element={<AboutPage />} />
+            //        <Route path="/dashboard" element={<DashboardPage />} />
+            //        <Route path="/favorites" element={<FavoritesPage />} />
+            //    </Routes>
+            //</Header1>
         <>
             <Routes>
                 <Route path="/login" element={<Account />} />
                 <Route path="/about" element={<AboutPage />} />
+                <Route path="/auction" element={
+                    <AuctionProvider>
+                        <div className="container2" style={{ padding:"10px 0 10px 0" }}>
+                                <div className="auction-content">
+                                    <div className="auction-primary2">
+                                        <VehicleGallery />
+                                    </div>
+                                    <div className="auction-secondary">
+                                        <BiddingInterface />
+                                    </div>
+                                </div>
+                            </div>
+                    </AuctionProvider>
+                } />
                 <Route path="/" element={<App />} />
                 <Route path="/car/:id" element={
                     <Header>

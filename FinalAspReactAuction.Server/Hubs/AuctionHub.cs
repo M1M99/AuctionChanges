@@ -24,5 +24,13 @@ namespace FinalAspReactAuction.Server.SignalR
 
             await Clients.All.SendAsync("ReceiveBid", user.UserName, bidAmount);
         }
+        public async Task PlaceBid(string bidder, decimal bidAmount)
+        {
+            // Logic for handling the bid
+            // For example, update the auction, notify other clients, etc.
+
+            // Notify other clients that a new bid was placed
+            await Clients.All.SendAsync("ReceiveBid", bidder, bidAmount);
+        }
     }
 }

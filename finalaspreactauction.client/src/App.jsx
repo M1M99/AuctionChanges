@@ -8,6 +8,9 @@ import ExitAnimation from "./Components/Example/Animation"
 import Carousel from "./Components/Example/CarouselUI"
 import ForAdmin from "./Components/Example/ForAdmin"
 import Card from "./Components/Example/Card"
+import AdminProfile from "./Components/Admin/AdminProfile"
+import BiddingInterface from "./Components/Auction/BidPage"
+import { AuctionProvider } from "./Components/Auction/AuctionContext"
 
 function App() {
     return (
@@ -15,15 +18,18 @@ function App() {
             <Header />
             <CarList />
             <Carousel />
-            {/*<CarouselForDetails />*/}
             <ExitAnimation />
             <Auction />
+            {/*<CarouselForDetails />*/}
             {/*<ModelList />*/}
             {/*<ChatBotWithAI />*/}
             {/*<Example />*/}
             {/*<CarList22 />*/}
             {/*<Foos2 />*/}
-            <Card></Card>
+            {/*<AuctionProvider>*/}
+            {/*    <BiddingInterface />*/}
+            {/*</AuctionProvider>*/}
+            <Card />
         </div>
     )
 }

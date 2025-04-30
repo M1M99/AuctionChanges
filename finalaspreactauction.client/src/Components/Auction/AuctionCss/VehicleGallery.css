@@ -1,0 +1,188 @@
+.vehicle-gallery {
+    background-color: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--space-6);
+    position: relative;
+    transition: all var(--transition-normal) var(--ease-in-out);
+}
+
+.gallery-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    background-color: rgba(0, 0, 0, 0.95);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 0;
+}
+
+.gallery-main {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    background-color: var(--color-gray-800);
+}
+
+.gallery-image-container {
+    position: relative;
+    width: 100%;
+    padding-top: 66.67%; /* 3:2 aspect ratio */
+    overflow: hidden;
+}
+
+.gallery-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity var(--transition-normal) var(--ease-out);
+    animation: scaleIn var(--transition-normal) var(--ease-out);
+}
+
+.gallery-fullscreen .gallery-image-container {
+    padding-top: 0;
+    height: 80vh;
+}
+
+.gallery-controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0;
+    transition: opacity var(--transition-fast) var(--ease-out);
+}
+
+.gallery-image-container:hover .gallery-controls {
+    opacity: 1;
+}
+
+.gallery-control {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    margin: 0 var(--space-4);
+    opacity: 0.8;
+    transition: all var(--transition-fast) var(--ease-out);
+    cursor: pointer;
+}
+
+    .gallery-control:hover {
+        opacity: 1;
+        background-color: rgba(0, 0, 0, 0.7);
+        transform: scale(1.1);
+    }
+
+.gallery-fullscreen-toggle {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    opacity: 0.8;
+    transition: all var(--transition-fast) var(--ease-out);
+    z-index: 10;
+    cursor: pointer;
+}
+
+    .gallery-fullscreen-toggle:hover {
+        opacity: 1;
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+
+.gallery-caption {
+    position: absolute;
+    bottom: var(--space-4);
+    right: var(--space-4);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.gallery-thumbnails {
+    display: flex;
+    overflow-x: auto;
+    padding: var(--space-2);
+    gap: var(--space-2);
+    scrollbar-width: none; /* Firefox */
+    background-color: white;
+}
+
+    .gallery-thumbnails::-webkit-scrollbar {
+        display: none;
+    }
+
+.gallery-fullscreen .gallery-thumbnails {
+    justify-content: center;
+    background-color: transparent;
+    margin-top: var(--space-4);
+}
+
+.gallery-thumbnail {
+    flex: 0 0 auto;
+    width: 80px;
+    height: 60px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    opacity: 0.7;
+    transition: all var(--transition-fast) var(--ease-out);
+}
+
+    .gallery-thumbnail:hover {
+        opacity: 0.9;
+    }
+
+    .gallery-thumbnail.active {
+        opacity: 1;
+        box-shadow: 0 0 0 2px var(--color-primary-500);
+    }
+
+.gallery-fullscreen .gallery-thumbnail {
+    width: 100px;
+    height: 75px;
+}
+
+.thumbnail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (min-width: 768px) {
+    .gallery-control {
+        width: 48px;
+        height: 48px;
+        font-size: the gallery thumbnails on the desktop version. Make them look ultra premium. margin: 0 var(--space-6);
+    }
+}
