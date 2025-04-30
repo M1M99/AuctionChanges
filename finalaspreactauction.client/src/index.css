@@ -943,3 +943,5 @@ th {
 .totalContainer {
     background-color: #f7f7f7;
 }
+
+    --radius-md: 0.375rem; /* 6px */
