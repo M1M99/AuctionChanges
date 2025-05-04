@@ -50,6 +50,11 @@ namespace FinalAspReactAuction.Server.Controllers
         public async Task<Favorite> GetAsync(string userId, int carId)
         {
             return await _favoriteDal.Get(a => a.UserId == userId && a.CarId == carId);
+        }  
+        [HttpGet("GetAll")]
+        public async Task<List<Favorite>> GetAllAsync(string userId)
+        {
+            return await _favoriteDal.GetCollection(a => a.UserId == userId);
         }
     }
 }

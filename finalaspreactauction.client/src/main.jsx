@@ -30,6 +30,7 @@ import Header1, { DashboardPage, FavoritesPage } from './Components/Example/Head
 import Features from './Components/Page/Features';
 import bgImage from './assets/plain-smooth-green-wall-texture.jpg'
 import Dashboard from './Components/Page/DashBoard';
+import Favorites from './Components/Page/Favorite';
 
 const button = {
     backgroundColor: "#0cdcf7",
@@ -46,6 +47,7 @@ const button = {
 
 function AppRoutes() {
     const [userRole, setUserRole] = useState(null);
+    const [userId, setUserId] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -55,9 +57,13 @@ function AppRoutes() {
                 const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
                 setUserRole(role);
                 console.log(role)
+                const userIdentity = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+                console.log(userIdentity,"ok")
+                setUserId(userIdentity);
             } catch (e) {
                 console.error("Error decoding token", e);
                 setUserRole(null);
+                setUserId(null);
             }
         }
     }, []);
@@ -90,7 +96,7 @@ function AppRoutes() {
                     } />
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/favorites" element={<FavoritesPage />} />
+                    <Route path="/favorites" element={<Favorites userId={userId} />} />
                 </Routes>
             </Header1>
 
