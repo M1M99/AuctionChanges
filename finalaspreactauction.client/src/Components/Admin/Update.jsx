@@ -112,6 +112,7 @@ function UpdateCarForm({ carId, carDetails, makes, models }) {
             form={form}
             name="update-car-form"
             onFinish={handleSubmit}
+            className="my-2"
             style={{ maxWidth: 600 }}
         >
             <Form.Item

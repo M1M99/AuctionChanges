@@ -133,19 +133,21 @@ function UpdateModelForm() {
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
+                        className="form-control mb-1"
                         name="Name"
                         onChange={handleChange}
                         value={modelDetails.Name}
                         placeholder="Model Name"
                     />
                     <input
+                        className="form-control mb-1"
                         type="text"
                         name="Type"
                         onChange={handleChange}
                         value={modelDetails.Type}
                         placeholder="Model Type"
                     />
-                    <button type="submit">Update Model</button>
+                    <button type="submit" className="btn btn-primary">Update Model</button>
                 </form>
             )}
         </div>

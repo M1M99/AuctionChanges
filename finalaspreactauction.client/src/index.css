@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -16,9 +17,17 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.informationPP {
+    font-family: 'Cascadia Code'
+}
+
+
 .react-slideshow-container .nav {
     padding: 0px;
     margin: 0;
+}
+
+.cards-container {
 }
 
 #adminSideList {
@@ -26,19 +35,19 @@
 }
 
 #jjfc {
-    width:320px
+    width: 320px
 }
 
 #formMake {
     width: 100%
 }
 
-.updateTitle{
-    font-family:"Roboto"
+.updateTitle {
+    font-family: "Roboto"
 }
 
 #perfect:hover {
-    background-color: #1d3557 
+    background-color: #1d3557
 }
 
 .ui-bookmark {
@@ -97,15 +106,22 @@
 .custom-dropdown .dropdown-menu {
     background-color: #caf0f8;
 }
+
+.custom-dropdown .dropdown-item {
+    font-family: 'Cascadia Code' !important;
+    font-weight: 600;
+}
+
 .dropdown-item {
     /*color: red !important;*/
     font-family: "Noto Sans", sans-serif;
 }
 
 .nav-link {
-    /*color: #fff !important;*/  /*header*/
+    /*color: #fff !important;*/ /*header*/
     /*font-family:"Roboto"*/
 }
+
 .bookmark::before {
     content: "";
     position: absolute;
@@ -115,9 +131,10 @@
 }
 
 #meauto {
-    font-family: "Roboto", sans-serif ;
+    font-family: "Roboto", sans-serif;
     font-family: "Noto Sans", sans-serif;
 }
+
 .ui-bookmark:hover .bookmark {
     fill: var(--icon-hover-color);
 }
@@ -144,6 +161,7 @@
         -webkit-animation-delay: var(--icon-anmt-duration);
         animation-delay: var(--icon-anmt-duration);
     }
+
 
 @-webkit-keyframes bookmark {
     50% {
@@ -238,6 +256,7 @@
         opacity: 0;
     }
 }
+
 #title {
     color: #a9d6e5;
     text-decoration: none;
@@ -256,7 +275,7 @@
 }
 
 .me-auto .nav-link {
-    font-weight:500;
+    font-weight: 500;
 }
 
     .me-auto .nav-link:hover {
@@ -412,6 +431,12 @@ td {
         box-shadow: 0 0 14px rgba(21, 48, 72, 0.5);
     }
 
+    @media(max-width:540px){
+        .inputSeach{
+            padding-left:0;
+            padding-left:15px
+        }
+    }
 
 .forEdit {
     border: 2px solid #8ecae6;
@@ -893,9 +918,11 @@ th {
     perspective: 1000px;
     font-family: sans-serif;
 }
+
 .flip-card-front p {
-    margin:5px 0px
+    margin: 5px 0px
 }
+
 .title {
     font-size: 1.2em;
     font-weight: 700;
@@ -1036,6 +1063,7 @@ th {
 .auction-primary2 {
     width: 100%;
 }
+
 @media (min-width: 992px) {
     .auction-content {
         flex-direction: row;
@@ -1052,6 +1080,7 @@ th {
         top: var(--space-4);
     }
 }
+
 .bidding-timer {
     display: flex;
     align-items: center;
@@ -1070,6 +1099,7 @@ th {
     margin: 0;
     color: var(--color-gray-900);
 }
+
 .bidding-interface {
     background-color: white;
     border-radius: var(--radius-lg);
@@ -1115,5 +1145,11 @@ th {
 @media (min-width: 1200px) {
     .container2 {
         max-width: 1140px;
+    }
+}
+
+@media(max-width: 600px) {
+    .buttonDropdown {
+        display: block !important;
     }
 }

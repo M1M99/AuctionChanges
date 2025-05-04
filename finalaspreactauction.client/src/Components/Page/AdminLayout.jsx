@@ -34,7 +34,7 @@ function AdminLayout() {
                             <Nav.Link as={Link} to="/">Home</Nav.Link>
                             <Nav.Link as={Link} to="/login">Account</Nav.Link>
                             <Nav.Link as={Link} to="/admin/adminside">Edit Page</Nav.Link>
-                            <NavDropdown title="Edit" id="basic-nav-dropdown" className="custom-dropdown">
+                            <NavDropdown title="Edit" id="basic-nav-dropdown" className="custom-dropdown mb-1">
                                 <NavDropdown.Item as={Link} to="/admin/addmakeormodel">Add New Make</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} to="/admin/delete">Delete/Update</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} to="/admin/addNew">Add New Vehicle</NavDropdown.Item>
@@ -42,10 +42,9 @@ function AdminLayout() {
                                 <NavDropdown.Item as={Link} to="/admin/UpdateMakeForm">Update Make</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} to="/admin/UpdateModel">Update Model</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} to="/admin/AI">Ask To AI</NavDropdown.Item>
-                                <NavDropdown.Divider />
                             </NavDropdown>
                         </Nav>
-                        <Nav id="perfect" className="ms-auto rounded px-2" style={{ border:"2px solid #bde0fe", fontWeight: "600", display: "flex", alignItems: "center" }}>
+                        <Nav id="perfect" className="ms-auto rounded px-2" style={{ border:"2px solid #bde0fe", fontWeight: "600", display: "flex", alignItems: "center",padding:"5px 0 5px 0" }}>
                             <img
                                 style={{
                                     width: "30px",
@@ -59,7 +58,7 @@ function AdminLayout() {
                                 alt="Profile"
                             />
                             {username ? (
-                                <Nav.Link onClick={() => navigate("/login") }>{username}</Nav.Link>
+                                <Nav.Link onClick={() => navigate("/login")} style={{fontFamily:"Cascadia Code"}}>{username}</Nav.Link>
                             ) : (
                                 <Nav.Link>Loading...</Nav.Link>
                             )}

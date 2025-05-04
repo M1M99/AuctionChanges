@@ -19,7 +19,7 @@ function App() {
             <CarList />
             <Carousel />
             <ExitAnimation />
-            <Auction />
+            {/*<Auction />*/}
             {/*<CarouselForDetails />*/}
             {/*<ModelList />*/}
             {/*<ChatBotWithAI />*/}

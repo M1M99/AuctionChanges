@@ -64,7 +64,7 @@ const GetPP = () => {
 
     return (
         <div>
-            <h3>Best Top {cars.length} Cars</h3>
+            <h3 className="informationPP" >Best Top {cars.length} Cars</h3>
             <div className="cards-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
                 {cars.map((car) => (
                     <Card

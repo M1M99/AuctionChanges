@@ -3,7 +3,6 @@ import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import logo from './../../assets/Auction.png';
 
-// Color system
 const colors = {
     primary: {
         950: '#121825',
@@ -25,7 +24,6 @@ const colors = {
     }
 };
 
-// Animations
 const fadeIn = keyframes`
   from { opacity: 0; }
   to { opacity: 1; }
@@ -36,7 +34,6 @@ const slideDown = keyframes`
   to { transform: translateY(0); opacity: 1; }
 `;
 
-// Styled Components
 const HeaderContainer = styled.header`
   width: 100%;
   position: sticky;
@@ -70,8 +67,8 @@ const LogoContainer = styled.div`
 `;
 
 const LogoImage = styled.img`
-  width: 56px;
-  height: 56px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   transition: transform 0.3s ease;
   
@@ -80,8 +77,8 @@ const LogoImage = styled.img`
   }
   
   @media (max-width: 790px) {
-    width: 48px;
-    height: 48px;
+    width: 58px;
+    height: 58px;
   }
 `;
 
@@ -97,7 +94,7 @@ const BrandTitle = styled(Link)`
     color: ${colors.accent[300]};
   }
   
-  @media (max-width: 805px) {
+  @media (max-width: 825px) {
     font-size: 20px;
     margin-left: 12px;
   }
@@ -169,16 +166,21 @@ const Button = styled.button`
     transform: translateY(0);
   }
 
-
     @media (max-width: 920px) {
     display: flex; 
     alignItems: center;
-    gap: 8px }
+    font-size:15px;
+    gap: 4px }
     @media (min-width: 1020px) {
         width:140px;
     alignItems: center;
     gap: 8px }
+
+     @media (max-width: 768px) {
+    display: ${props => props.isOpen ? 'flex' : 'none'};
+}  
   }  
+
 `;
 
 const UserInfo = styled.div`
@@ -186,9 +188,9 @@ const UserInfo = styled.div`
   flex-direction: column;
   align-items: center;
   font-size: 0.75rem;
+  text-transform:capitalize;
   color: ${colors.neutral[400]};
   margin-top: 4px;
-
    @media (max-width: 768px) {
    display:none;
   }  
@@ -235,7 +237,7 @@ const NavLinks = ({ isAuthenticated }) => {
     return (
         <NavLinksContainer>
             <StyledNavLink to="/">Home</StyledNavLink>
-            <StyledNavLink to="/auctions">Auctions</StyledNavLink>
+            <StyledNavLink to="/auction">Auctions</StyledNavLink>
             {isAuthenticated && (
                 <>
                     <StyledNavLink to="/dashboard">Dashboard</StyledNavLink>
@@ -284,7 +286,6 @@ const Header1 = ({ adminName, children }) => {
                     </LogoContainer>
 
                     <NavLinks isAuthenticated={isAuthenticated} />
-
                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                         {isAuthenticated ? (
                             <Button onClick={handleLogout} >
@@ -305,12 +306,13 @@ const Header1 = ({ adminName, children }) => {
 
                 <MobileMenu isOpen={mobileMenuOpen}>
                     <StyledNavLink to="/" onClick={() => setMobileMenuOpen(false)}>Home</StyledNavLink>
-                    <StyledNavLink to="/auctions" onClick={() => setMobileMenuOpen(false)}>Auctions</StyledNavLink>
+                    <StyledNavLink to="/auction" onClick={() => setMobileMenuOpen(false)}>Auctions</StyledNavLink>
                     {isAuthenticated && (
                         <>
                             <StyledNavLink to="/dashboard" onClick={() => setMobileMenuOpen(false)}>Dashboard</StyledNavLink>
                             <StyledNavLink to="/favorites" onClick={() => setMobileMenuOpen(false)}>Favorites</StyledNavLink>
                         </>
+                            //<StyledNavLink to="/admin" onClick={() => setMobileMenuOpen(false)}>Admin</StyledNavLink>
                     )}
                     <StyledNavLink to="/about" onClick={() => setMobileMenuOpen(false)}>About</StyledNavLink>
                     {isAuthenticated ? (
@@ -334,27 +336,6 @@ const Header1 = ({ adminName, children }) => {
     );
 };
 
-
-export const LoginPage = () => (
-    <div className="page-container">
-        <h1>Login</h1>
-        <p>Please sign in to your account</p>
-    </div>
-);
-
-export const AuctionsPage = () => (
-    <div className="page-container">
-        <h1>Available Auctions</h1>
-        <p>Browse our current car auctions</p>
-    </div>
-);
-
-export const AboutPage = () => (
-    <div className="page-container">
-        <h1>About Us</h1>
-        <p>Learn more about Online Car Auction</p>
-    </div>
-);
 
 export const DashboardPage = () => (
     <div className="page-container">

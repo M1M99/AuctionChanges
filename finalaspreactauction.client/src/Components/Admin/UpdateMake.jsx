@@ -214,7 +214,7 @@ function UpdateMakeForm() {
     const StyledWrapper1 = styled.div`
   button {
     font-family: inherit;
-    font-size: 20px;
+    font-size: 15px;
     background: royalblue;
     color: white;
     padding: 0.7em 1em;
@@ -222,7 +222,7 @@ function UpdateMakeForm() {
     display: flex;
     align-items: center;
     border: none;
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
     transition: all 0.2s;
     cursor: pointer;
@@ -280,6 +280,8 @@ function UpdateMakeForm() {
                 {selectedId && (
                     <form onSubmit={handleSubmit} className="mx-5">
                         <input
+                            className="form-control mb-1"
+                            style={{fontWeight:"700"}}
                             type="text"
                             name="Name"
                             onChange={handleChange}
@@ -287,6 +289,8 @@ function UpdateMakeForm() {
                             placeholder="Name"
                         />
                         <input
+                            className="form-control mb-1"
+                            style={{fontWeight:"500"}}
                             type="text"
                             name="Description"
                             onChange={handleChange}

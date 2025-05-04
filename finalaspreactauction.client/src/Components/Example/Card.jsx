@@ -25,12 +25,11 @@ const Card = ({ car, getMakeName, getModelName }) => {
     );
 };
 
-
 const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  margin:10px 0 20px 0;
 `;
 
 const CardWrapper = styled.div`
@@ -71,6 +70,7 @@ const CardContent = styled.div`
   p {
     color: white;
     margin: 5px 0;
+    font-family: 'Cascadia Code'; 
   }
 `;
 

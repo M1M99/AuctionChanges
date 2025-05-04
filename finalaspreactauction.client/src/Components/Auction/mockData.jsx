@@ -8,7 +8,7 @@ export const mockVehicleData = {
     startingBid: 65000,
     reservePrice: 78000,
     buyNowPrice: 85000,
-    timeRemaining: 3600, 
+    timeRemaining: 1800, //bid time
     location: 'Los Angeles, CA',
     seller: 'Premium Auto Group',
     condition: 'Clean',
@@ -51,7 +51,6 @@ export const mockVehicleData = {
     ]
 };
 
-// Mock bid history
 export const mockBidHistory = [
     {
         id: 5,

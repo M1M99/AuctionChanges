@@ -47,27 +47,18 @@ const GetCarById = () => {
                     </Row>
                 </Col>
                 <Col className="gutter-row" span={7}>
-                    {/*<div style={style}>*/}
-                    {/*    <span style={{ borderLeft: "2px solid red" }}>VEHICLE INFORMATION</span>*/}
-                    {/*    <h4>{carData?.country}</h4>*/}
-                    {/*    <p>{carData?.description}</p>*/}
-                    {/*    <p>Price: {carData?.price}</p>*/}
-                    {/*    <p>{carData?.fuelType}</p>*/}
-                    {/*    <p>{carData?.engine}</p>*/}
-                    {/*    <p>{carData?.damage}</p>*/}
-                    {/*</div>*/}
                     <div className="flip-card">
                         <div className="flip-card-inner">
                             <div className="flip-card-front">
-                                <p className="title" >VEHICLE INFORMATION</p>
-                                <p>{carData?.country}</p>
+                                <p className="title" style={{ fontFamily: "Cascadia Code" }}>VEHICLE INFORMATION</p>
+                                <p style={{fontWeight:"600"} }>{carData?.country}</p>
                                 <p>Price: {carData?.price}</p>
                                 <p>{carData?.fuelType}</p>
-                                <p>{carData?.engine}</p>
+                                <p>{carData?.engine}L</p>
                                 <p>{carData?.damage}</p>
                             </div>
                             <div className="flip-card-back">
-                                <p className="title">Description<br/>-</p>
+                                <p className="title" style={{ fontFamily:"Roboto" }}>Description<br />-</p>
                                 <p>{carData?.description}</p>
                             </div>
                         </div>

@@ -16,10 +16,9 @@ export function AuctionProvider({ children }) {
     const [bidStatus, setBidStatus] = useState(null);
     const [connection, setConnection] = useState(null);
 
-    // SignalR Connection setup
     useEffect(() => {
         const conn = new HubConnectionBuilder()
-            .withUrl('https://localhost:7038/auctionHub') // Your SignalR Hub URL
+            .withUrl('https://localhost:7038/auctionHub') 
             .withAutomaticReconnect()
             .build();
 
