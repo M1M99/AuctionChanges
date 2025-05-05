@@ -10,27 +10,26 @@ import ForAdmin from "./Components/Example/ForAdmin"
 import Card from "./Components/Example/Card"
 import AdminProfile from "./Components/Admin/AdminProfile"
 import BiddingInterface from "./Components/Auction/BidPage"
-import { AuctionProvider } from "./Components/Auction/AuctionContext"
 
 function App() {
     return (
-        <div className="totalContainer">
-            <Header />
-            <CarList />
-            <Carousel />
-            <ExitAnimation />
-            {/*<Auction />*/}
-            {/*<CarouselForDetails />*/}
-            {/*<ModelList />*/}
-            {/*<ChatBotWithAI />*/}
-            {/*<Example />*/}
-            {/*<CarList22 />*/}
-            {/*<Foos2 />*/}
-            {/*<AuctionProvider>*/}
-            {/*    <BiddingInterface />*/}
-            {/*</AuctionProvider>*/}
-            <Card />
-        </div>
+            <div className="totalContainer">
+                <Header />
+                <CarList />
+                <Carousel />
+                <ExitAnimation />
+                {/*<Auction />*/}
+                {/*<CarouselForDetails />*/}
+                {/*<ModelList />*/}
+                {/*<ChatBotWithAI />*/}
+                {/*<Example />*/}
+                {/*<CarList22 />*/}
+                {/*<Foos2 />*/}
+                {/*<AuctionProvider>*/}
+                {/*    <BiddingInterface />*/}
+                {/*</AuctionProvider>*/}
+                <Card />
+        </div >
     )
 }
 

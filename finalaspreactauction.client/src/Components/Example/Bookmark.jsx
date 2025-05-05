@@ -13,7 +13,6 @@ const BookmarkToggle = ({ carId, userId }) => {
 
                 if (response.data && response.status === 200) {
                     setIsFavorited(true);
-                    console.log(response.data);
                 } else {
                     setIsFavorited(false);
                     console.log(response);

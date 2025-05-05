@@ -2,6 +2,7 @@
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import logo from './../../assets/Auction.png';
+import { useAuth } from '../../Components/Example/AuthContext';
 
 const colors = {
     primary: {
@@ -252,24 +253,28 @@ const NavLinks = ({ isAuthenticated }) => {
 const Header1 = ({ adminName, children }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
-    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
+    //const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
 
-    useEffect(() => {
-        const checkAuth = async () => {
-            const token = localStorage.getItem('authToken');
-            if (!token) {
-                setIsAuthenticated(false);
-                return;
-            }
-            setIsAuthenticated(true);
-        };
+    //useEffect(() => {
+    //    const checkAuth = async () => {
+    //        const token = localStorage.getItem('authToken');
+    //        if (!token) {
+    //            setIsAuthenticated(false);
+    //            return;
+    //        }
+    //        setIsAuthenticated(true);
+    //    };
 
-        checkAuth();
-    }, []);
+    //    checkAuth();
+    //}, []);
+    const { isAuthenticated, logout } = useAuth();
+    //const navigate = useNavigate();
+    //const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const handleLogout = () => {
-        localStorage.removeItem('authToken');
-        setIsAuthenticated(false);
+        //localStorage.removeItem('authToken');
+        //setIsAuthenticated(false);
+        navigate();
         navigate('/login');
     };
 

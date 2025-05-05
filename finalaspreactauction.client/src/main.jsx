@@ -31,6 +31,7 @@ import Features from './Components/Page/Features';
 import bgImage from './assets/plain-smooth-green-wall-texture.jpg'
 import Dashboard from './Components/Page/DashBoard';
 import Favorites from './Components/Page/Favorite';
+import { AuthProvider } from './Components/Example/AuthContext';
 
 const button = {
     backgroundColor: "#0cdcf7",
@@ -68,9 +69,9 @@ function AppRoutes() {
         }
     }, []);
     const location = useLocation();
-    if (userRole === null) {
-        return <div>Loading...</div>;
-    }
+    //if (userRole === null) {
+    //    return <div>Loading...</div>;
+    //}
     const isAdmin = userRole === 'Admin';
     const showFooter = location.pathname !== "/login" && location.pathname !== "/404" && location.pathname !== "*";
 
@@ -99,7 +100,6 @@ function AppRoutes() {
                     <Route path="/favorites" element={<Favorites userId={userId} />} />
                 </Routes>
             </Header1>
-
 
             <Routes>
                 <Route path="/login" element={<Account />} />
@@ -162,7 +162,9 @@ function AppRoutes() {
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         <BrowserRouter>
+            <AuthProvider>
             <AppRoutes />
+        </AuthProvider>
         </BrowserRouter>
     </StrictMode>
 );

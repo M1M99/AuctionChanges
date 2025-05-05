@@ -117,7 +117,7 @@ const CarList = () => {
             setUserId(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]);
             setUserRole(decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
         } else {
-            navigate("/login");
+            //navigate("/login");
         }
     }, [navigate]);
 
@@ -133,13 +133,6 @@ const CarList = () => {
         return model ? model.name : "Unknown Model";
     };
 
-
-    //const filteredCars = cars.filter(car =>
-    //    car.vin.toLowerCase().includes(search.toLowerCase()) ||
-    //    getMakeName(car.makeId).toLowerCase().includes(search.toLowerCase()) ||
-    //    getModelName(car.modelId).toLowerCase().includes(search.toLowerCase()) ||
-    //    car.year.toString().includes(search)
-    //);
     const filteredCars = cars.filter(car => {
         const vinMatch = car.vin.toLowerCase().includes(search.toLowerCase());
         const makeMatch = getMakeName(car.makeId).toLowerCase().includes(search.toLowerCase());
