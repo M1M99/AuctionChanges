@@ -247,8 +247,8 @@ const CarList = () => {
             {cars.length === 0 ? (
                 <Loading />
             ) : (
-                filteredCars.length === 0 ? (
-                    <p>No Cars Found</p>
+                    filteredCars.length === 0 ? (
+                        <p style={{fontFamily:"Cascadia Code"} }>No Cars Found</p>
                 ) : (
                     //filteredCars.map((car) => (
                     //    <div className="flex" key={car.id} id="listofcar">
@@ -308,8 +308,7 @@ const CarList = () => {
 
                     <div className="w-full">
                         {filteredCars.map((car) => (
-                            <div className="flex flex-col md:flex-row border-b border-gray-200 py-4 hover:bg-gray-50 transition-colors" key={car.id} id="listofcar">
-                                {/* Car Image */}
+                            <div className="flex flex-col md:flex-row border-b border-gray-200 py-4 hover:bg-gray-510 transition-colors rounded" key={car.id} id="listofcar">
                                 <div id="imgCar" className="w-full md:w-[250px] flex-shrink-0 mb-4 md:mb-0">
                                     <img
                                         src={car.imageUrl}
@@ -328,7 +327,6 @@ const CarList = () => {
                                             {getMakeName(car.makeId)} {getModelName(car.modelId)} {car.year}
                                         </div>
 
-                                        {/* Main details grid */}
                                         <div className="grid grid-cols-2 md:grid-cols-3 gap-y-2 gap-x-4 mb-3">
                                             <div className="flex flex-col">
                                                 <span className="text-gray-500 text-sm">Damage</span>

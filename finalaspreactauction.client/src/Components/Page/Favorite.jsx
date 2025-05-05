@@ -46,7 +46,7 @@ const Favorites = ({ userId }) => {
     
     return (
         <div className="max-w-5xl mx-auto p-4">
-            <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">Your Favorite Cars</h1>
+            <h1 className="text-3xl font-bold mb-6 text-center text-blue-600" style={{ fontFamily:"Roboto" }}>Your Favorite Cars</h1>
 
             {carDetails.length === 0 ? (
                 <p className="text-gray-500 text-center">No favorite cars found.</p>

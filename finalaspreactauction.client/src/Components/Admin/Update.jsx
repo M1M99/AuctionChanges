@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Button, Form, Input, Select, Space } from 'antd';
+import { AlertCircle, Car, Upload, FileVideo, Save, RefreshCw } from 'lucide-react';
 function UpdateCarForm({ carId, carDetails, makes, models }) {
     const [car, setCar] = useState({
         id: carId,
@@ -23,320 +23,293 @@ function UpdateCarForm({ carId, carDetails, makes, models }) {
         video: null,
     });
 
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
+
     useEffect(() => {
         if (carDetails && carDetails.id === carId) {
-            setCar({
-                id: carId,
-                Branch: carDetails.Branch || '',
-                Country: carDetails.Country || '',
-                Cylinder: carDetails.Cylinder || '',
-                Damage: carDetails.Damage || '',
-                Description: carDetails.Description || '',
-                Engine: carDetails.Engine || '',
-                FuelType: carDetails.FuelType || '',
-                Key: carDetails.Key || '',
-                MakeId: carDetails.MakeId || 0,
-                ModelId: carDetails.ModelId || 0,
-                Otometer: carDetails.Otometer || '',
-                Price: carDetails.Price || '',
-                SaleDocument: carDetails.SaleDocument || '',
-                Vin: carDetails.Vin || '',
-                Year: carDetails.Year || '',
-                photo: null,
-                video: null,
-            });
+            setCar(prev => ({ ...prev, ...carDetails }));
         }
     }, [carDetails, carId]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setCar((prevCar) => ({
-            ...prevCar,
-            [name]: value,
-        }));
+        setCar(prev => ({ ...prev, [name]: value }));
+        setError('');
     };
 
     const handleFileChange = (e) => {
         const { name, files } = e.target;
-        if (name === 'photo') {
-            setCar((prevCar) => ({
-                ...prevCar,
-                photo: files[0],
-            }));
-        } else if (name === 'video') {
-            setCar((prevCar) => ({
-                ...prevCar,
-                video: files[0],
-            }));
+        if (files[0]) {
+            setCar(prev => ({ ...prev, [name]: files[0] }));
         }
     };
 
+    const handleReset = () => {
+        if (carDetails) {
+            setCar(prev => ({ ...prev, ...carDetails }));
+        } else {
+            setCar({
+                id: carId,
+                Branch: '',
+                Country: '',
+                Cylinder: '',
+                Damage: '',
+                Description: '',
+                Engine: '',
+                FuelType: '',
+                Key: '',
+                MakeId: 0,
+                ModelId: 0,
+                Otometer: '',
+                Price: '',
+                SaleDocument: '',
+                Vin: '',
+                Year: '',
+                photo: null,
+                video: null,
+            });
+        }
+        setError('');
+        setSuccess(false);
+    };
+
     const handleSubmit = async (e) => {
-        //e.preventDefault();
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+        setSuccess(false);
 
         const formData = new FormData();
-
-        Object.keys(car).forEach((key) => {
-            if (car[key] !== undefined && car[key] !== null) {
-                formData.append(key, car[key]);
+        Object.entries(car).forEach(([key, value]) => {
+            if (value !== null && value !== undefined) {
+                formData.append(key, value);
             }
         });
 
         try {
             const response = await axios.put('https://localhost:7038/api/Car', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
+            setSuccess(true);
             console.log('Car updated successfully:', response.data);
-        } catch (error) {
-            console.error('Error updating car:', error);
+        } catch (err) {
+            setError(err.response?.data?.message || 'Error updating car');
+            console.error('Error updating car:', err);
+        } finally {
+            setLoading(false);
         }
     };
 
-    const { Option } = Select;
-    const layout = {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 16 },
-    };
-
-    const tailLayout = {
-        wrapperCol: { offset: 8, span: 16 },
-    };
-
-    const [form] = Form.useForm();
-
     return (
-        <Form
-            {...layout}
-            form={form}
-            name="update-car-form"
-            onFinish={handleSubmit}
-            className="my-2"
-            style={{ maxWidth: 600 }}
-        >
-            <Form.Item
-                name="SaleDocument"
-                label="Sale Document"
-                rules={[{ required: true, message: 'Please input the sale document!' }]}
-            >
-                <Input
-                    name="SaleDocument"
-                    value={car.SaleDocument}
-                    onChange={handleChange}
-                    placeholder="Sale Document"
-                />
-            </Form.Item>
+        <div className="max-w-4xl mx-auto p-5 bg-white rounded-xl shadow-lg my-2">
+            <div className="mb-6">
+                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                    <Car className="w-6 h-6" />
+                    Update Car Details
+                </h2>
+                <p className="text-gray-600">Update the information for your vehicle listing</p>
+            </div>
 
-            <Form.Item
-                name="Branch"
-                label="Branch"
-                rules={[{ required: true, message: 'Please input the branch!' }]}
-            >
-                <Input
-                    name="Branch"
-                    value={car.Branch}
-                    onChange={handleChange}
-                    placeholder="Branch"
-                />
-            </Form.Item>
+            {error && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-700">
+                    <AlertCircle className="w-5 h-5" />
+                    {error}
+                </div>
+            )}
 
-            <Form.Item
-                name="Otometer"
-                label="Otometer"
-                rules={[{ required: true, message: 'Please input the otometer!' }]}
-            >
-                <Input
-                    name="Otometer"
-                    value={car.Otometer}
-                    onChange={handleChange}
-                    placeholder="Otometer"
-                />
-            </Form.Item>
+            {success && (
+                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2 text-green-700">
+                    <Save className="w-5 h-5" />
+                    Car details updated successfully!
+                </div>
+            )}
 
-            <Form.Item
-                name="Year"
-                label="Year"
-                rules={[{ required: true, message: 'Please input the year!' }]}
-            >
-                <Input
-                    name="Year"
-                    value={car.Year}
-                    onChange={handleChange}
-                    placeholder="Year"
-                />
-            </Form.Item>
+            <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                        <h3 className="font-semibold text-gray-700 border-b pb-2">Basic Information</h3>
 
-            <Form.Item
-                name="Vin"
-                label="Vin"
-                rules={[{ required: true, message: 'Please input the vin!' }]}
-            >
-                <Input
-                    name="Vin"
-                    value={car.Vin}
-                    onChange={handleChange}
-                    placeholder="Vin"
-                />
-            </Form.Item>
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium text-gray-700">Make</label>
+                            <select
+                                name="MakeId"
+                                value={car.MakeId}
+                                onChange={handleChange}
+                                className="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            >
+                                <option value={0}>Select a Make</option>
+                                {makes?.map((make) => (
+                                    <option key={make.id} value={make.id}>
+                                        {make.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-            <Form.Item
-                name="Price"
-                label="Price"
-                rules={[{ required: true, message: 'Please input the price!' }]}
-            >
-                <Input
-                    name="Price"
-                    value={car.Price}
-                    onChange={handleChange}
-                    placeholder="Price"
-                />
-            </Form.Item>
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium text-gray-700">Model</label>
+                            <select
+                                name="ModelId"
+                                value={car.ModelId}
+                                onChange={handleChange}
+                                className="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            >
+                                <option value={0}>Select a Model</option>
+                                {models?.map((model) => (
+                                    <option key={model.id} value={model.id}>
+                                        {model.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-            <Form.Item
-                name="Key"
-                label="Key"
-                rules={[{ required: true, message: 'Please input the key!' }]}
-            >
-                <Input
-                    name="Key"
-                    value={car.Key}
-                    onChange={handleChange}
-                    placeholder="Key"
-                />
-            </Form.Item>
+                        {[
+                            { name: 'Year', placeholder: 'Enter year' },
+                            { name: 'Price', placeholder: 'Enter price' },
+                            { name: 'Vin', placeholder: 'Enter VIN number' },
+                        ].map((field) => (
+                            <div key={field.name} className="space-y-2">
+                                <label className="block text-sm font-medium text-gray-700">
+                                    {field.name}
+                                </label>
+                                <input
+                                    type="text"
+                                    name={field.name}
+                                    value={car[field.name]}
+                                    onChange={handleChange}
+                                    placeholder={field.placeholder}
+                                    className="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                />
+                            </div>
+                        ))}
+                    </div>
 
-            <Form.Item
-                name="FuelType"
-                label="FuelType"
-                rules={[{ required: true, message: 'Please input the fuel type!' }]}
-            >
-                <Input
-                    name="FuelType"
-                    value={car.FuelType}
-                    onChange={handleChange}
-                    placeholder="FuelType"
-                />
-            </Form.Item>
+                    <div className="space-y-4">
+                        <h3 className="font-semibold text-gray-700 border-b pb-2">Technical Details</h3>
 
-            <Form.Item
-                name="Country"
-                label="Country"
-                rules={[{ required: true, message: 'Please input the country!' }]}
-            >
-                <Input
-                    name="Country"
-                    value={car.Country}
-                    onChange={handleChange}
-                    placeholder="Country"
-                />
-            </Form.Item>
+                        {[
+                            { name: 'Engine', placeholder: 'Enter engine details' },
+                            { name: 'Cylinder', placeholder: 'Enter cylinder count' },
+                            { name: 'FuelType', placeholder: 'Enter fuel type' },
+                            { name: 'Otometer', placeholder: 'Enter odometer reading' },
+                            { name: 'Damage', placeholder: 'Enter damage details' },
+                        ].map((field) => (
+                            <div key={field.name} className="space-y-2">
+                                <label className="block text-sm font-medium text-gray-700">
+                                    {field.name}
+                                </label>
+                                <input
+                                    type="text"
+                                    name={field.name}
+                                    value={car[field.name]}
+                                    onChange={handleChange}
+                                    placeholder={field.placeholder}
+                                    className="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
 
-            <Form.Item
-                name="Cylinder"
-                label="Cylinder"
-                rules={[{ required: true, message: 'Please input the cylinder!' }]}
-            >
-                <Input
-                    name="Cylinder"
-                    value={car.Cylinder}
-                    onChange={handleChange}
-                    placeholder="Cylinder"
-                />
-            </Form.Item>
+                <div className="space-y-4">
+                    <h3 className="font-semibold text-gray-700 border-b pb-2">Additional Information</h3>
 
-            <Form.Item
-                name="Damage"
-                label="Damage"
-                rules={[{ required: true, message: 'Please input the damage!' }]}
-            >
-                <Input
-                    name="Damage"
-                    value={car.Damage}
-                    onChange={handleChange}
-                    placeholder="Damage"
-                />
-            </Form.Item>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {[
+                            { name: 'Branch', placeholder: 'Enter branch' },
+                            { name: 'Country', placeholder: 'Enter country' },
+                            { name: 'Key', placeholder: 'Enter key details' },
+                            { name: 'SaleDocument', placeholder: 'Enter sale document details' },
+                        ].map((field) => (
+                            <div key={field.name} className="space-y-2">
+                                <label className="block text-sm font-medium text-gray-700">
+                                    {field.name}
+                                </label>
+                                <input
+                                    type="text"
+                                    name={field.name}
+                                    value={car[field.name]}
+                                    onChange={handleChange}
+                                    placeholder={field.placeholder}
+                                    className="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                />
+                            </div>
+                        ))}
+                    </div>
 
-            <Form.Item
-                name="Description"
-                label="Description"
-                rules={[{ required: true, message: 'Please input the description!' }]}
-            >
-                <Input
-                    name="Description"
-                    value={car.Description}
-                    onChange={handleChange}
-                    placeholder="Description"
-                />
-            </Form.Item>
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea
+                            name="Description"
+                            value={car.Description}
+                            onChange={handleChange}
+                            placeholder="Enter detailed description"
+                            rows={4}
+                            className="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        />
+                    </div>
+                </div>
 
-            <Form.Item
-                name="Engine"
-                label="Engine"
-                rules={[{ required: true, message: 'Please input the engine!' }]}
-            >
-                <Input
-                    name="Engine"
-                    value={car.Engine}
-                    onChange={handleChange}
-                    placeholder="Engine"
-                />
-            </Form.Item>
+                <div className="space-y-4">
+                    <h3 className="font-semibold text-gray-700 border-b pb-2">Media</h3>
 
-            <Form.Item name="MakeId" label="Make" rules={[{ required: true }]}>
-                <Select
-                    name="MakeId"
-                    value={car.MakeId}
-                    onChange={(value) => handleChange({ target: { name: 'MakeId', value } })}
-                    placeholder="Select a make"
-                    allowClear
-                >
-                    <Option value={0}>Select a Make</Option>
-                    {makes.map((make) => (
-                        <Option key={make.id} value={make.id}>
-                            {make.name}
-                        </Option>
-                    ))}
-                </Select>
-            </Form.Item>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium text-gray-700">Photo</label>
+                            <div className="flex items-center gap-2">
+                                <Upload className="w-5 h-5 text-gray-400" />
+                                <input
+                                    type="file"
+                                    name="photo"
+                                    onChange={handleFileChange}
+                                    className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
+                    file:rounded-full file:border-0 file:text-sm file:font-semibold
+                    file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                />
+                            </div>
+                        </div>
 
-            <Form.Item name="ModelId" label="Model" rules={[{ required: true }]}>
-                <Select
-                    name="ModelId"
-                    value={car.ModelId}
-                    onChange={(value) => handleChange({ target: { name: 'ModelId', value } })}
-                    placeholder="Select a model"
-                    allowClear
-                >
-                    <Option value={0}>Select a Model</Option>
-                    {models.map((model) => (
-                        <Option key={model.id} value={model.id}>
-                            {model.name}
-                        </Option>
-                    ))}
-                </Select>
-            </Form.Item>
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium text-gray-700">Video</label>
+                            <div className="flex items-center gap-2">
+                                <FileVideo className="w-5 h-5 text-gray-400" />
+                                <input
+                                    type="file"
+                                    name="video"
+                                    onChange={handleFileChange}
+                                    className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
+                    file:rounded-full file:border-0 file:text-sm file:font-semibold
+                    file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <Form.Item name="photo" label="Upload Photo">
-                <input type="file" name="photo" onChange={handleFileChange} />
-            </Form.Item>
-
-            <Form.Item name="video" label="Upload Video">
-                <input type="file" name="video" onChange={handleFileChange} />
-            </Form.Item>
-
-            <Form.Item {...tailLayout}>
-                <Space>
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                    <Button htmlType="button">
+                <div className="flex items-center justify-end gap-4 pt-6 border-t">
+                    <button
+                        type="button"
+                        onClick={handleReset}
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                        <RefreshCw className="w-4 h-4" />
                         Reset
-                    </Button>
-                </Space>
-            </Form.Item>
-        </Form>
+                    </button>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={`flex items-center gap-2 px-6 py-2 text-sm font-medium bg-blue-600 rounded-lg
+              ${loading ? 'opacity-75 cursor-not-allowed' : 'hover:bg-blue-700'}
+              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+                    >
+                        <Save className="w-4 h-4" />
+                        {loading ? 'Updating...' : 'Update Car'}
+                    </button>
+                </div>
+            </form>
+        </div>
     );
 }
 
