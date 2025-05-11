@@ -619,7 +619,7 @@ td {
         display: flex;
         justify-content: space-between;
         animation: change 0.7s alternate-reverse;
-        padding: 1vw;
+        padding: 2vw;
     }
 }
 

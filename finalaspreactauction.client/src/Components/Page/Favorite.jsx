@@ -49,7 +49,7 @@ const Favorites = ({ userId }) => {
             <h1 className="text-3xl font-bold mb-6 text-center text-blue-600" style={{ fontFamily:"Roboto" }}>Your Favorite Cars</h1>
 
             {carDetails.length === 0 ? (
-                <p className="text-gray-500 text-center">No favorite cars found.</p>
+                <p className="text-gray-500 text-center" style={{ marginBottom: "10vw" }}>No favorite cars found.</p>
             ) : (
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {carDetails.map((car) => (

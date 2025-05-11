@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import Pattern from '../Components/Example/background';
+import { useAuth } from './../Components/Example/AuthContext';
 function Account() {
     const [isActive, setIsActive] = useState(false);
     const [css, changeCSS] = useState(false);
@@ -17,6 +18,8 @@ function Account() {
     const [error, setError] = useState("");
     const [role, setRole] = useState("");
     let navigate = useNavigate();
+    const { login } = useAuth();
+
 
     useEffect(() => {
         if (!css) {
@@ -58,10 +61,12 @@ function Account() {
                 setRole(response.data.role);
                 if (response.data.token) {
                     localStorage.setItem("authToken", response.data.token);
+                    login(response.data.token);
                 }
                 let role1 = response.data.role;
                 console.log(role1, "salam")
                 console.log(role1.toString())
+
                 if (role1.toString() === "Admin") {
                     console.log("Navigating to admin page");
                     changeCSS(true);

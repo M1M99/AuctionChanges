@@ -210,7 +210,7 @@ const CarList = () => {
 
 
     return (
-        <Container id="container">
+        <Container id="container" className="mb-3">
             <div className='inputDiv'>
                 <div style={{ display: 'flex', gap: '10px', margin: '10px 0' }} className="buttonDropdown">
                     <Button

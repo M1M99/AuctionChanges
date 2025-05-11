@@ -13,22 +13,24 @@ import BiddingInterface from "./Components/Auction/BidPage"
 
 function App() {
     return (
-            <div className="totalContainer">
-                <Header />
-                <CarList />
-                <Carousel />
+        <div className="totalContainer" style={{ marginTop: "-25px" }}>
+            {/*<Header />*/}
+            <CarList />
+            <Carousel />
+            <div style={{ padding: "12px 20px 12px 20px" }}>
                 <ExitAnimation />
-                {/*<Auction />*/}
-                {/*<CarouselForDetails />*/}
-                {/*<ModelList />*/}
-                {/*<ChatBotWithAI />*/}
-                {/*<Example />*/}
-                {/*<CarList22 />*/}
-                {/*<Foos2 />*/}
-                {/*<AuctionProvider>*/}
-                {/*    <BiddingInterface />*/}
-                {/*</AuctionProvider>*/}
-                <Card />
+            </div>
+            {/*<Auction />*/}
+            {/*<CarouselForDetails />*/}
+            {/*<ModelList />*/}
+            {/*<ChatBotWithAI />*/}
+            {/*<Example />*/}
+            {/*<CarList22 />*/}
+            {/*<Foos2 />*/}
+            {/*<AuctionProvider>*/}
+            {/*    <BiddingInterface />*/}
+            {/*</AuctionProvider>*/}
+            <Card />
         </div >
     )
 }

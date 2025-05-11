@@ -1,4 +1,4 @@
-import { StrictMode, useEffect, useState } from 'react';
+﻿import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import './index.css';
@@ -32,6 +32,7 @@ import bgImage from './assets/plain-smooth-green-wall-texture.jpg'
 import Dashboard from './Components/Page/DashBoard';
 import Favorites from './Components/Page/Favorite';
 import { AuthProvider } from './Components/Example/AuthContext';
+import CarDetailPage from './Components/Fetch/GetCarById';
 
 const button = {
     backgroundColor: "#0cdcf7",
@@ -49,6 +50,7 @@ const button = {
 function AppRoutes() {
     const [userRole, setUserRole] = useState(null);
     const [userId, setUserId] = useState(null);
+    const [userName, setUserName] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -56,82 +58,55 @@ function AppRoutes() {
             try {
                 const decoded = jwtDecode(token);
                 const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-                setUserRole(role);
-                console.log(role)
                 const userIdentity = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
-                console.log(userIdentity,"ok")
+                const userName = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+                setUserRole(role);
                 setUserId(userIdentity);
+                setUserName(userName);
+                console.log(role)
+                console.log(userIdentity, "ok")
             } catch (e) {
                 console.error("Error decoding token", e);
-                setUserRole(null);
-                setUserId(null);
+                setUserRole('Guest');
             }
+        }
+        else {
+            setUserRole('Guest');
         }
     }, []);
     const location = useLocation();
-    //if (userRole === null) {
-    //    return <div>Loading...</div>;
-    //}
     const isAdmin = userRole === 'Admin';
     const showFooter = location.pathname !== "/login" && location.pathname !== "/404" && location.pathname !== "*";
-
+    if (userRole === null) {
+        return <div>Loading...</div>;
+    }
     return (
         <>
-            <Header1 adminName="arif">
-                <Routes>
-                    <Route path="/" element={<App />} />
-                    <Route path="/login" element={<Account />} />
-                    <Route path="/auction" element={
-                        <AuctionProvider>
-                            <div className="container2" style={{ padding: "10px 0 10px 0" }}>
-                                <div className="auction-content">
-                                    <div className="auction-primary2">
-                                        <VehicleGallery />
-                                    </div>
-                                    <div className="auction-secondary">
-                                        <BiddingInterface />
-                                    </div>
-                                </div>
-                            </div>
-                        </AuctionProvider>
-                    } />
-                    <Route path="/about" element={<AboutPage />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/favorites" element={<Favorites userId={userId} />} />
-                </Routes>
-            </Header1>
-
+            {showFooter && <Header1 adminName={userName} />}
             <Routes>
+                <Route path="/" element={<App />} />
                 <Route path="/login" element={<Account />} />
-                <Route path="/about" element={
-                    <Header><AboutPage />
-                    </Header>
-                } />
-                <Route path="/features" element={
-                    <Header>
-                        <Features />
-                    </Header>} />
                 <Route path="/auction" element={
-                    <Header>
-                        <AuctionProvider>
-                            <div className="container2" style={{ padding: "10px 0 10px 0" }}>
-                                <div className="auction-content">
-                                    <div className="auction-primary2">
-                                        <VehicleGallery />
-                                    </div>
-                                    <div className="auction-secondary">
-                                        <BiddingInterface />
-                                    </div>
+                    <AuctionProvider>
+                        <div className="container2" style={{ padding: "10px 0 10px 0" }}>
+                            <div className="auction-content">
+                                <div className="auction-primary2">
+                                    <VehicleGallery />
+                                </div>
+                                <div className="auction-secondary">
+                                    <BiddingInterface />
                                 </div>
                             </div>
-                        </AuctionProvider>
-                    </Header>
+                        </div>
+                    </AuctionProvider>
                 } />
-                <Route path="/" element={<App />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/favorites" element={<Favorites userId={userId} />} />
+                <Route path="/features" element={
+                    <Features />} />
                 <Route path="/car/:id" element={
-                    <Header>
-                        <GetCarById />
-                    </Header>
+                    <CarDetailPage />
                 } />
                 <Route path="/admin" element={isAdmin ? < AdminLayout /> : (<Navigate to="/" />)}>
                     <Route index element={<ForAdmin />} />
@@ -148,14 +123,67 @@ function AppRoutes() {
                     </div>} />
                 </Route>
                 <Route path={`/getCarByBrand/:id`} element={
-                    <Header>
-                        <GetCarByMake />
-                    </Header>
+                    <GetCarByMake />
                 } />
                 <Route path="*" element={<NotFound />} />
             </Routes>
+
             {showFooter && <Footer />}
         </>
+
+        //{//<Routes>
+        //    <Route path="/login" element={<Account />} />
+        //    <Route path="/about" element={
+        //        <Header><AboutPage />
+        //        </Header>
+        //    } />
+        //    <Route path="/features" element={
+        //        <Header>
+        //        </Header>} />
+        //    <Route path="/auction" element={
+        //        <Header>
+        //            <AuctionProvider>
+        //                <div className="container2" style={{ padding: "10px 0 10px 0" }}>
+        //                    <div className="auction-content">
+        //                        <div className="auction-primary2">
+        //                            <VehicleGallery />
+        //                        </div>
+        //                        <div className="auction-secondary">
+        //                            <BiddingInterface />
+        //                        </div>
+        //                    </div>
+        //                </div>
+        //            </AuctionProvider>
+        //        </Header>
+        //    } />
+        //    <Route path="/" element={<App />} />
+        //    <Route path="/car/:id" element={
+        //        <Header>
+        //            <GetCarById />
+        //        </Header>
+        //    } />
+        //    <Route path="/admin" element={isAdmin ? < AdminLayout /> : (<Navigate to="/" />)}>
+        //        <Route index element={<ForAdmin />} />
+        //        <Route path="addNew" element={<ExitAnimation />} />
+        //        <Route path="delete" element={<CarList />} />
+        //        <Route path="addmakeormodel" element={<AdminSide />} />
+        //        <Route path="AI" element={<ChatBotWithAI />} />
+        //        <Route path="UpdateMakeForm" element={<UpdateMakeForm />} />
+        //        <Route path="UpdateModel" element={<UpdateModelForm />} />
+        //        <Route path="adminside" element={<div style={{ backgroundImage: `url(${bgImage})` }} className="m-2 flex flex-row p-4 gap-2">
+        //            {<AdminSide />}
+        //            {<ExitAnimation />}
+        //            <Link to="/admin/delete" style={button}>Delete</Link>
+        //        </div>} />
+        //    </Route>
+        //    <Route path={`/getCarByBrand/:id`} element={
+        //        <Header>
+        //            <GetCarByMake />
+        //        </Header>
+        //    } />
+        //    <Route path="*" element={<NotFound />} />
+        //</Routes>
+        //{showFooter && <Footer />}}
     );
 }
 
@@ -163,8 +191,8 @@ createRoot(document.getElementById('root')).render(
     <StrictMode>
         <BrowserRouter>
             <AuthProvider>
-            <AppRoutes />
-        </AuthProvider>
+                <AppRoutes />
+            </AuthProvider>
         </BrowserRouter>
     </StrictMode>
 );

@@ -56,8 +56,9 @@ const Nav = styled.nav`
   transition: all 0.3s ease;
   
   @media (max-width: 790px) {
-    padding: 0 16px;
+    padding: 0 20px;
     margin: 4px;
+    margin-bottom:0px
   }
 `;
 
@@ -231,7 +232,7 @@ const MobileMenu = styled.div`
 `;
 
 const MainContent = styled.main`
-  padding: 16px;
+  padding: 12px;
 `;
 
 const NavLinks = ({ isAuthenticated }) => {
@@ -274,7 +275,7 @@ const Header1 = ({ adminName, children }) => {
     const handleLogout = () => {
         //localStorage.removeItem('authToken');
         //setIsAuthenticated(false);
-        navigate();
+        logout();
         navigate('/login');
     };
 
@@ -287,7 +288,7 @@ const Header1 = ({ adminName, children }) => {
                             src={logo}
                             alt="Online Car Auction Logo"
                         />
-                        <BrandTitle to="/">Online Car Auction</BrandTitle>
+                        <BrandTitle to="/#">Online Car Auction</BrandTitle>
                     </LogoContainer>
 
                     <NavLinks isAuthenticated={isAuthenticated} />
