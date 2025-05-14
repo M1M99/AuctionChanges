@@ -32,7 +32,7 @@ const Dashboard = () => {
                                 <h2 className="text-xl font-semibold text-gray-700 my-auto">Your Account</h2>
                             </div>
                             <div className="space-y-4">
-                                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
+                                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer mt-2">
                                     <div className="flex items-center gap-3">
                                         <Settings className="w-5 h-5 text-gray-600" />
                                         <span className="text-gray-700">Account Settings</span>

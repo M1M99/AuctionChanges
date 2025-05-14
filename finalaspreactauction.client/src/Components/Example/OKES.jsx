@@ -35,7 +35,6 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Bottom Text */}
                 <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-400">
                     <p className="flex justify-center items-center gap-1">
                         <Copyright className="h-4 w-4" />

@@ -1,3 +1,20 @@
+import { useState } from "react";
+
+export const fetchVehicleData = async (id = 1) => {
+    try {
+        const response = await fetch(`https://localhost:7038/api/Car/GetById?id=${id}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Failed to fetch vehicle data:', error);
+        return null;
+    }
+};
+
+
 export const mockVehicleData = {
     id: 'VIN1234567890ABCDE',
     title: '2022 Mercedes-Benz S-Class',
@@ -8,7 +25,7 @@ export const mockVehicleData = {
     startingBid: 65000,
     reservePrice: 78000,
     buyNowPrice: 85000,
-    timeRemaining: 1800, //bid time
+    timeRemaining: 480, //bid time
     location: 'Los Angeles, CA',
     seller: 'Premium Auto Group',
     condition: 'Clean',

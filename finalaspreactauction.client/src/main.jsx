@@ -25,7 +25,6 @@ import { Navigate } from 'react-router-dom';
 import AboutPage from './Components/Page/AboutPage';
 import { AuctionProvider } from './Components/Auction/AuctionContext';
 import BiddingInterface from './Components/Auction/BidPage';
-import VehicleGallery from './Components/Auction/VehicleGallery';
 import Header1, { DashboardPage, FavoritesPage } from './Components/Example/Head';
 import Features from './Components/Page/Features';
 import bgImage from './assets/plain-smooth-green-wall-texture.jpg'
@@ -33,6 +32,10 @@ import Dashboard from './Components/Page/DashBoard';
 import Favorites from './Components/Page/Favorite';
 import { AuthProvider } from './Components/Example/AuthContext';
 import CarDetailPage from './Components/Fetch/GetCarById';
+import VehicleGallery from './Components/Auction/VehicleGallery';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import AuctionGuard from './Components/Fetch/AuctionGuard';
+
 
 const button = {
     backgroundColor: "#0cdcf7",
@@ -77,34 +80,39 @@ function AppRoutes() {
     const location = useLocation();
     const isAdmin = userRole === 'Admin';
     const showFooter = location.pathname !== "/login" && location.pathname !== "/404" && location.pathname !== "*";
+    const showHeader = location.pathname === "/admin";
     if (userRole === null) {
         return <div>Loading...</div>;
     }
     return (
         <>
-            {showFooter && <Header1 adminName={userName} />}
+            {showFooter && !showHeader && < Header1 adminName={userName} />}
             <Routes>
                 <Route path="/" element={<App />} />
                 <Route path="/login" element={<Account />} />
-                <Route path="/auction" element={
+                <Route path="/auction" element={<Navigate to="/auction/1" replace />} />
+                <Route path="/auction/:id" element={
                     <AuctionProvider>
-                        <div className="container2" style={{ padding: "10px 0 10px 0" }}>
-                            <div className="auction-content">
-                                <div className="auction-primary2">
-                                    <VehicleGallery />
-                                </div>
-                                <div className="auction-secondary">
-                                    <BiddingInterface />
+                        <AuctionGuard>
+                            <div className="container2" style={{ padding: "10px 0 10px 0" }}>
+                                <div className="auction-content">
+                                    <div className="auction-primary2">
+                                        <VehicleGallery />
+                                    </div>
+                                    <div className="auction-secondary">
+                                        <BiddingInterface />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </AuctionGuard>
                     </AuctionProvider>
                 } />
+
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/favorites" element={<Favorites userId={userId} />} />
                 <Route path="/features" element={
-                    <Features />} />
+                    <Features />} />replace ne 
                 <Route path="/car/:id" element={
                     <CarDetailPage />
                 } />

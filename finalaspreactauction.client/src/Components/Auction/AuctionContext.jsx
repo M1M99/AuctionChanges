@@ -1,24 +1,50 @@
 ﻿import { createContext, useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { HubConnectionBuilder } from '@microsoft/signalr';
-import { mockVehicleData, mockBidHistory } from '../../Components/Auction/mockData';
+import { mockBidHistory } from '../../Components/Auction/mockData';
+import { fetchVehicleDataAndMergeToMock } from '../Fetch/mockjsx';
+import { useParams } from 'react-router-dom';
 
 const AuctionContext = createContext();
 
 export function AuctionProvider({ children }) {
-    const [vehicle, setVehicle] = useState(mockVehicleData);
+    const [vehicle, setVehicle] = useState(null); 
     const [bidHistory, setBidHistory] = useState(mockBidHistory);
-    const [currentBid, setCurrentBid] = useState(vehicle.currentBid);
-    const [nextBid, setNextBid] = useState(vehicle.currentBid + vehicle.bidIncrement);
-    const [timeRemaining, setTimeRemaining] = useState(vehicle.timeRemaining);
+    const [currentBid, setCurrentBid] = useState(0);
+    const [nextBid, setNextBid] = useState(0);
+    const [timeRemaining, setTimeRemaining] = useState(0);
     const [isUserHighBidder, setIsUserHighBidder] = useState(false);
     const [inputBid, setInputBid] = useState('');
     const [bidStatus, setBidStatus] = useState(null);
     const [connection, setConnection] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const { id } = useParams();
+    useEffect(() => {
+        const loadVehicleData = async () => {
+            try {
+                const vehicleFromApi = await fetchVehicleDataAndMergeToMock(id);
+                setVehicle(vehicleFromApi);
+                setCurrentBid(vehicleFromApi.currentBid);
+                setNextBid(vehicleFromApi.currentBid + vehicleFromApi.bidIncrement);
+                setTimeRemaining(vehicleFromApi.timeRemaining);
+            } catch (err) {
+                setError('Failed to load vehicle data');
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadVehicleData();
+    }, []);
+
+
 
     useEffect(() => {
         const conn = new HubConnectionBuilder()
-            .withUrl('https://localhost:7038/auctionHub') 
+            .withUrl('https://localhost:7038/auctionHub')
             .withAutomaticReconnect()
             .build();
 
@@ -31,7 +57,7 @@ export function AuctionProvider({ children }) {
         conn.on('ReceiveBid', (bidder, bidAmount) => {
             console.log('New bid received:', bidder, bidAmount);
             setCurrentBid(bidAmount);
-            setIsUserHighBidder(false); 
+            setIsUserHighBidder(false);
             setBidStatus('outbid');
             setBidHistory(prev => [
                 { id: Date.now(), amount: bidAmount, bidder, time: new Date().toISOString(), isUser: false },
@@ -40,12 +66,14 @@ export function AuctionProvider({ children }) {
             setTimeout(() => setBidStatus(null), 3000);
         });
 
-        return () => conn.stop(); 
+        return () => conn.stop();
     }, []);
 
     useEffect(() => {
-        setNextBid(currentBid + vehicle.bidIncrement);
-    }, [currentBid, vehicle.bidIncrement]);
+        if (vehicle) {
+            setNextBid(currentBid + vehicle.bidIncrement);
+        }
+    }, [currentBid, vehicle]);
 
     useEffect(() => {
         if (timeRemaining <= 0) return;
@@ -97,6 +125,7 @@ export function AuctionProvider({ children }) {
 
         return true;
     };
+
     const formatTimeRemaining = () => {
         if (timeRemaining <= 0) return 'Auction Ended';
 

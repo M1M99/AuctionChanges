@@ -27,3 +27,12 @@
 //    }
 
 //}
+
+public class Bid
+{
+    public int Id { get; set; }
+    public int VehicleId { get; set; }
+    public decimal Amount { get; set; }
+    public string Bidder { get; set; }
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+}

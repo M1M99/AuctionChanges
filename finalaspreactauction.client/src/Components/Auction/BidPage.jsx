@@ -1,7 +1,7 @@
 ﻿import { useState, useEffect } from 'react';
 import { useAuction } from '../../Components/Auction/AuctionContext';
 import './../Auction/AuctionCss/BiddingInterface.css';
-
+import { useNavigate } from 'react-router-dom';
 function BiddingInterface() {
     const {
         vehicle,
@@ -16,7 +16,7 @@ function BiddingInterface() {
         formatTimeRemaining,
         formatCurrency
     } = useAuction();
-
+    const navigate = useNavigate();
     const [timeClass, setTimeClass] = useState('');
 
     useEffect(() => {
@@ -48,11 +48,15 @@ function BiddingInterface() {
     };
 
     const handleAlternativeBid = (multiplier) => {
-        const bidAmount = currentBid + (vehicle.bidIncrement * multiplier);
+        const bidAmount = currentBid + (vehicle?.bidIncrement || 0) * multiplier;
         placeBid(bidAmount);
     };
 
     const isAuctionEnded = timeRemaining === 0;
+
+    if (!vehicle) {
+        return <div style={{ fontFamily:"Roboto" }}>Loading vehicle data...</div>;  
+    }
 
     return (
         <div className="bidding-interface">
@@ -143,21 +147,21 @@ function BiddingInterface() {
                             onClick={() => handleAlternativeBid(2)}
                             disabled={isAuctionEnded}
                         >
-                            Bid {formatCurrency(currentBid + vehicle.bidIncrement * 2)}
+                            Bid {formatCurrency(currentBid + (vehicle?.bidIncrement || 0) * 2)}
                         </button>
                         <button
                             className="alt-bid-button"
                             onClick={() => handleAlternativeBid(5)}
                             disabled={isAuctionEnded}
                         >
-                            Bid {formatCurrency(currentBid + vehicle.bidIncrement * 5)}
+                            Bid {formatCurrency(currentBid + (vehicle?.bidIncrement || 0) * 5)}
                         </button>
                         <button
                             className="alt-bid-button"
                             onClick={() => handleAlternativeBid(10)}
                             disabled={isAuctionEnded}
                         >
-                            Bid {formatCurrency(currentBid + vehicle.bidIncrement * 10)}
+                            Bid {formatCurrency(currentBid + (vehicle?.bidIncrement || 0) * 10)}
                         </button>
                     </div>
                 </>
@@ -174,7 +178,9 @@ function BiddingInterface() {
                             <span className="status-text">Final Bid: {formatCurrency(currentBid)}</span>
                         </div>
                     )}
-                    <button className="similar-items-button">View Similar Vehicles</button>
+                        <button className="similar-items-button"
+                            onClick={() => navigate(`/getCarByBrand/${vehicle.brandId}`)}
+                        >View Similar Vehicles</button>
                 </div>
             )}
 

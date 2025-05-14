@@ -6,7 +6,7 @@ const Pattern = () => {
     useEffect(() => {
         document.body.style.overflow = 'hidden';
         return () => {
-            document.body.style.overflow = 'auto'; // Sayfadan çýkýnca geri aç
+            document.body.style.overflow = 'auto';
         };
     }, []);
 

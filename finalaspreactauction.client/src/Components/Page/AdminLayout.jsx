@@ -14,7 +14,7 @@ function AdminLayout() {
         if (token) {
             try {
                 const decoded = jwtDecode(token);
-                const userName = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ; // JWT yapýsýna göre uygun olan key'i seçin
+                const userName = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ;
                 setUsername(userName);
                 console.log(decoded)
             } catch (error) {

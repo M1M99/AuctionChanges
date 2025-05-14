@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userRole, setUserRole] = useState(null);
     const [userId, setUserId] = useState(null);
+    const [userName, setUserName] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -15,6 +16,7 @@ export const AuthProvider = ({ children }) => {
                 const decoded = jwtDecode(token);
                 setUserRole(decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
                 setUserId(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]);
+                setUserName(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]);
                 setIsAuthenticated(true);
             } catch {
                 setIsAuthenticated(false);
@@ -27,6 +29,7 @@ export const AuthProvider = ({ children }) => {
         const decoded = jwtDecode(token);
         setUserRole(decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
         setUserId(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]);
+        setUserName(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]);
         setIsAuthenticated(true);
     };
 
@@ -38,7 +41,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, userRole, userId, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, userRole, userId, userName, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

@@ -6,15 +6,16 @@ import Loading from './Loading';
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faFilter } from '@fortawesome/free-solid-svg-icons';
 import UpdateCarForm from '../Admin/Update';
-import { IconButton } from '@mui/material'; //Tooltip add here
+import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { SearchOutlined } from '@ant-design/icons';
 import { Button, Flex, Tooltip } from 'antd';
 import BookmarkToggle from '../Example/Bookmark';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
+
+const ITEMS_PER_PAGE = 3; 
 
 const CarList = () => {
     const [cars, setCars] = useState([]);
@@ -25,33 +26,21 @@ const CarList = () => {
     const navigate = useNavigate();
     const [carIdToUpdate, setCarIdToUpdate] = useState(null);
     const [selectedCarDetails, setSelectedCarDetails] = useState(null);
-    const [openEditInput, setOpenEditInput] = useState(false)
+    const [openEditInput, setOpenEditInput] = useState(false);
     const [editBtn, setEditBtn] = useState(false);
     const [userId, setUserId] = useState("");
-
     const [visible, setVisible] = useState(false);
-
-
     const [selectedMake, setSelectedMake] = useState('');
     const [selectedModel, setSelectedModel] = useState('');
-    //const token = localStorage.getItem("authToken");
 
-    //useEffect(() => {
-    //    const decoded = token ? jwtDecode(token) : null;
-    //    if (decoded) {
-    //        setUserId(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]);
-    //        setUserRole(decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
-    //    } else {
-    //        navigate("/login");
-    //    }
-    //}, [token, navigate]);
+    const [currentPage, setCurrentPage] = useState(1);
+
     const update = (carId) => {
-        setOpenEditInput(!openEditInput)
+        setOpenEditInput(!openEditInput);
         setCarIdToUpdate(carId);
         const carToUpdate = cars.find(car => car.id === carId);
         setSelectedCarDetails(carToUpdate);
-    }
-
+    };
 
     const carUrl = "https://localhost:7038/api/Car/Cars";
     const makeUrl = "https://localhost:7038/api/Brand/GetAll";
@@ -97,9 +86,9 @@ const CarList = () => {
                 const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
                 const userId1 = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
                 setUserRole(role);
-                console.log(token)
-                console.log(role)
-                console.log(userId1)
+                console.log(token);
+                console.log(role);
+                console.log(userId1);
             } catch (error) {
                 console.error("Error decoding token:", error);
                 navigate("/#");
@@ -109,19 +98,17 @@ const CarList = () => {
         }
     }, [navigate]);
 
-
     useEffect(() => {
         const storedToken = localStorage.getItem("authToken");
         if (storedToken) {
             const decoded = jwtDecode(storedToken);
             setUserId(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]);
             setUserRole(decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
-        } else {
-            //navigate("/login");
         }
     }, [navigate]);
-
-
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+    }, [currentPage]);
 
     const getMakeName = (makeId) => {
         const make = makes.find(m => m.id === makeId);
@@ -145,6 +132,16 @@ const CarList = () => {
         return (vinMatch || makeMatch || modelMatch || yearMatch) && makeFilter && modelFilter;
     });
 
+    const totalPages = Math.ceil(filteredCars.length / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const currentCars = filteredCars.slice(startIndex, endIndex);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        window.scrollTo(0, 0);
+    };
+
     const handleAction = (carId) => {
         axios.delete("https://localhost:7038/api/Car/DeleteById", {
             headers: null,
@@ -155,11 +152,15 @@ const CarList = () => {
                     .then((response) => response.json())
                     .then((res) => {
                         setCars(res);
-                    })
-            })
+                    });
+            });
     };
 
-    const toggleVisibility = () => { console.log(visible); setVisible(!visible) };
+    const toggleVisibility = () => {
+        console.log(visible);
+        setVisible(!visible);
+    };
+
     const editHandle = () => {
         setEditBtn(!editBtn);
     };
@@ -167,6 +168,7 @@ const CarList = () => {
     const handleCarClick = (carId) => {
         navigate(`/car/${carId}`);
     };
+
     const Button = ({ label, arr, onSelect, selectedId }) => {
         const selectedItem = arr.find(item => item.id === parseInt(selectedId));
         const displayText = selectedItem ? selectedItem.name : `Select`;
@@ -208,7 +210,6 @@ const CarList = () => {
         );
     };
 
-
     return (
         <Container id="container" className="mb-3">
             <div className='inputDiv'>
@@ -219,7 +220,6 @@ const CarList = () => {
                         selectedId={selectedMake}
                         onSelect={setSelectedMake}
                     />
-
                     <Button
                         label="Model"
                         arr={models.filter(model => selectedMake === '' || model.makeId === parseInt(selectedMake))}
@@ -228,13 +228,24 @@ const CarList = () => {
                     />
                 </div>
 
-                {userrole === "Admin" && (<FontAwesomeIcon icon={faPenToSquare} className="editForAdminIcon" onClick={() => { editHandle() }} />)}
+                {userrole === "Admin" && (
+                    <FontAwesomeIcon
+                        icon={faPenToSquare}
+                        className="editForAdminIcon"
+                        onClick={editHandle}
+                    />
+                )}
                 <FontAwesomeIcon
-                    onClick={() => { toggleVisibility() }}
+                    onClick={toggleVisibility}
                     className="iconSearch"
                     style={{ display: "flex", width: "27px", height: "27px", margin: "auto 3px", cursor: "pointer" }}
                     icon={faFilter}
-                />  <FontAwesomeIcon style={{ display: "flex", width: "30px", height: "30px", margin: "auto 3px" }} className="iconSearch" icon={faSearchengin} />
+                />
+                <FontAwesomeIcon
+                    style={{ display: "flex", width: "30px", height: "30px", margin: "auto 3px" }}
+                    className="iconSearch"
+                    icon={faSearchengin}
+                />
                 <input
                     onChange={(ev) => setSearch(ev.target.value)}
                     value={search}
@@ -246,68 +257,12 @@ const CarList = () => {
 
             {cars.length === 0 ? (
                 <Loading />
+            ) : filteredCars.length === 0 ? (
+                <p style={{ fontFamily: "Cascadia Code" }}>No Cars Found</p>
             ) : (
-                    filteredCars.length === 0 ? (
-                        <p style={{fontFamily:"Cascadia Code"} }>No Cars Found</p>
-                ) : (
-                    //filteredCars.map((car) => (
-                    //    <div className="flex" key={car.id} id="listofcar">
-                    //        <div id="imgCar" className="w-[250px]"><img src={car.imageUrl} alt={car.vin} onClick={() => handleCarClick(car.id)} style={{ cursor: 'pointer' }} /></div>
-                    //        <div id="detailscars" className="w-xl flex justify-between">
-                    //            <table className="table-auto m-2">
-                    //                <thead>
-                    //                    <tr>
-                    //                        <th onClick={() => handleCarClick(car.id)} style={{ cursor: 'pointer' }}>Details </th>
-                    //                    </tr>
-                    //                </thead>
-                    //                <tbody>
-                    //                    <tr>
-                    //                        <td>{getMakeName(car.makeId)}</td>
-                    //                        <td>{getModelName(car.modelId)}</td>
-                    //                        <td>{car.year}</td>
-                    //                    </tr>
-                    //                    <tr>
-                    //                        <td><p id="damage">{car.damage}</p></td>
-                    //                        <td><p id="typeofFuel">{car.fuelType}</p></td>
-                    //                        <td>{car.otometer}</td>
-                    //                    </tr>
-                    //                    <tr>
-                    //                        <td>{car.country}</td>
-                    //                        <td>{car.vin}</td>
-                    //                        <td>{car.engine}L</td>
-                    //                        {userrole !== "Admin" && (
-                    //                            <tr>
-                    //                                <td colSpan="3">
-                    //                                    <BookmarkToggle carId={car.id} userId={userId} />
-                    //                                    {console.log(userId)}
-                    //                                </td>
-                    //                            </tr>)}
-                    //                        {userrole === "Admin" && editBtn && (
-                    //                            <div>
-                    //                                <td id="edit" className="absolute right-50">
-                    //                                    <Tooltip title="Edit">
-                    //                                        <IconButton onClick={() => update(car.id)}>
-                    //                                            <ModeEditIcon />
-                    //                                        </IconButton>
-                    //                                    </Tooltip>
-                    //                                </td>
-                    //                                <td id="delete" className="absolute right-10">
-                    //                                    <Tooltip title="Delete">
-                    //                                        <IconButton onClick={() => handleAction(car.id)}>
-                    //                                            <DeleteIcon />
-                    //                                        </IconButton>
-                    //                                    </Tooltip>
-                    //                                </td>
-                    //                            </div>
-                    //                        )}
-                    //                    </tr>
-                    //                </tbody>
-                    //            </table>
-                    //        </div>
-                    //    </div>
-
+                <>
                     <div className="w-full">
-                        {filteredCars.map((car) => (
+                        {currentCars.map((car) => (
                             <div className="flex flex-col md:flex-row border-b border-gray-200 py-4 hover:bg-gray-510 transition-colors rounded" key={car.id} id="listofcar">
                                 <div id="imgCar" className="w-full md:w-[250px] flex-shrink-0 mb-4 md:mb-0">
                                     <img
@@ -397,17 +352,51 @@ const CarList = () => {
                             </div>
                         ))}
                     </div>
-                ))
-            }
-            
-            {
-                carIdToUpdate && selectedCarDetails && editBtn && openEditInput && (
-                    <UpdateCarForm carId={carIdToUpdate} carDetails={selectedCarDetails} makes={makes} models={models} />
-                )
-            }
-        </Container >
+
+                    {totalPages > 1 && (
+                        <div className="flex justify-center items-center gap-2 my-2">
+                            <button
+                                onClick={() => handlePageChange(currentPage - 1)}
+                                disabled={currentPage === 1}
+                                className="px-4 py-2 rounded-1 disabled:bg-gray-900 disabled:cursor-not-allowed hover:bg-blue-600 transition-colors"
+                            >
+                                Previous
+                            </button>
+
+                            <div className="flex gap-2">
+                                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                                    <button
+                                        key={page}
+                                        onClick={() => handlePageChange(page)}
+                                        className={`px-4 py-2 rounded-2 ${currentPage === page
+                                                ? 'bg-blue-500 text-primary'
+                                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                            } transition-colors`}
+                                    >
+                                        {page}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <button
+                                onClick={() => handlePageChange(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                                        className="px-4 py-2 rounded-1 bg-blue-500 disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-600 transition-colors"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    )}
+                </>
+            )}
+
+            {carIdToUpdate && selectedCarDetails && editBtn && openEditInput && (
+                <UpdateCarForm carId={carIdToUpdate} carDetails={selectedCarDetails} makes={makes} models={models} />
+            )}
+        </Container>
     );
 };
+
 const StyledWrapper = styled.div`
   display: ${props => props.$visible ? 'flex' : 'none'};
   .menu {
@@ -461,7 +450,7 @@ const StyledWrapper = styled.div`
 
   .menu .item {
     position: relative;
-    cursor:pointer
+    cursor: pointer;
   }
 
   .menu .item .submenu {
@@ -482,24 +471,10 @@ const StyledWrapper = styled.div`
     z-index: 1;
     pointer-events: none;
     list-style: none;
-  max-height: 200px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #888 #000;
-
-  &::-webkit-scrollbar {
-    width: 1000px;
-  }
-  //&::-webkit-scrollbar-track {
-  //  background: #f1f1f1;
-  //}
-  //&::-webkit-scrollbar-thumb {
-  //  background: #888;
-  //  border-radius: 6px;
-  //}
-  //&::-webkit-scrollbar-thumb:hover {
-  //  background: #555;
-  //}
+    max-height: 200px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #000;
   }
 
   .menu .item:hover .submenu {
@@ -565,18 +540,21 @@ const StyledWrapper = styled.div`
 
   .submenu .submenu-link:hover {
     color: #ffffff;
-  }`;
+  }
+`;
+
 const Container = styled.div`
     margin: 0 10px;
     padding: 0 10px;
     padding-bottom: 10px;
     border-radius: 3px;
     background-color: #6a9eb5;
-    background:linear-gradient(to bottom right, #8ecae6, #219ebc); //ffb703
-        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
-      &:hover {
-    background:linear-gradient(to bottom right, #8ecae6, #219ebc); //ffb703
-        box-shadow: 0px 6px 12px rgba(0, 0, 0.4, 0.4); 
+    background: linear-gradient(to bottom right, #8ecae6, #219ebc);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
+    
+    &:hover {
+        background: linear-gradient(to bottom right, #8ecae6, #219ebc);
+        box-shadow: 0px 6px 12px rgba(0, 0, 0.4, 0.4);
     }
 `;
 

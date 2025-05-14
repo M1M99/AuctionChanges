@@ -4,18 +4,26 @@ import './../Auction/AuctionCss/VehicleGallery.css';
 
 function VehicleGallery() {
     const { vehicle } = useAuction();
+
+    if (!vehicle || !vehicle.images) {
+        return <div>Loading vehicle images...</div>;
+    }
+
+    const imageList = Array.isArray(vehicle.images) ? vehicle.images : [vehicle.images];
+    const videoList = Array.isArray(vehicle.video) ? vehicle.video : [vehicle.video];
+
     const [activeIndex, setActiveIndex] = useState(0);
     const [isFullscreen, setIsFullscreen] = useState(false);
 
     const nextSlide = () => {
         setActiveIndex((prevIndex) =>
-            prevIndex === vehicle.images.length - 1 ? 0 : prevIndex + 1
+            prevIndex === imageList.length - 1 ? 0 : prevIndex + 1
         );
     };
 
     const prevSlide = () => {
         setActiveIndex((prevIndex) =>
-            prevIndex === 0 ? vehicle.images.length - 1 : prevIndex - 1
+            prevIndex === 0 ? imageList.length - 1 : prevIndex - 1
         );
     };
 
@@ -49,10 +57,11 @@ function VehicleGallery() {
             <div className="gallery-main">
                 <div className="gallery-image-container">
                     <img
-                        src={vehicle.images[activeIndex]}
+                        src={imageList[activeIndex]}
                         alt={`${vehicle.title} - Image ${activeIndex + 1}`}
                         className="gallery-image"
                     />
+
                     <div className="gallery-controls">
                         <button
                             className="gallery-control gallery-prev"
@@ -76,14 +85,15 @@ function VehicleGallery() {
                             {isFullscreen ? '✕' : '⤢'}
                         </button>
                     </div>
+
                     <div className="gallery-caption">
-                        {activeIndex + 1} / {vehicle.images.length}
+                        {activeIndex + 1} / {imageList.length}
                     </div>
                 </div>
             </div>
 
             <div className="gallery-thumbnails">
-                {vehicle.images.map((image, index) => (
+                {imageList.map((image, index) => (
                     <div
                         key={index}
                         className={`gallery-thumbnail ${index === activeIndex ? 'active' : ''}`}

@@ -96,7 +96,7 @@ const BrandTitle = styled(Link)`
     color: ${colors.accent[300]};
   }
   
-  @media (max-width: 825px) {
+  @media (max-width: 925px) {
     font-size: 20px;
     margin-left: 12px;
   }
@@ -145,6 +145,13 @@ const StyledNavLink = styled(Link)`
       width: 100%;
     }
   }
+    @media (max-width: 925px) {
+    font-size: 15px;
+  }
+
+      @media (max-width: 900px) {
+    font-size: 13px;
+  }
 `;
 
 const Button = styled.button`
@@ -169,11 +176,12 @@ const Button = styled.button`
   }
 
     @media (max-width: 920px) {
-    display: flex; 
+    display: flex;
+    padding:8px 16px;
     alignItems: center;
     font-size:15px;
     gap: 4px }
-    @media (min-width: 1020px) {
+    @media (min-width: 920px) {
         width:140px;
     alignItems: center;
     gap: 8px }
@@ -236,22 +244,27 @@ const MainContent = styled.main`
 `;
 
 const NavLinks = ({ isAuthenticated }) => {
+    const { userRole } = useAuth();
     return (
         <NavLinksContainer>
             <StyledNavLink to="/">Home</StyledNavLink>
             <StyledNavLink to="/auction">Auctions</StyledNavLink>
             {isAuthenticated && (
                 <>
-                    <StyledNavLink to="/dashboard">Dashboard</StyledNavLink>
+                    <StyledNavLink to="/dashboard" id="dashboard">Dashboard</StyledNavLink>
                     <StyledNavLink to="/favorites">Favorites</StyledNavLink>
                 </>
             )}
-            <StyledNavLink to="/about">About</StyledNavLink>
+            <StyledNavLink to="/about" id="about">About</StyledNavLink>
+            {console.log(userRole)}
+            {userRole == 'Admin' && (
+                <StyledNavLink to="/admin">Admin</StyledNavLink>)
+            }
         </NavLinksContainer>
     );
 };
 
-const Header1 = ({ adminName, children }) => {
+const Header1 = ({children }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
     //const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
@@ -268,7 +281,8 @@ const Header1 = ({ adminName, children }) => {
 
     //    checkAuth();
     //}, []);
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated, logout, userRole,userName } = useAuth();
+    const isAdmin = userRole === 'Admin';
     //const navigate = useNavigate();
     //const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -296,7 +310,7 @@ const Header1 = ({ adminName, children }) => {
                         {isAuthenticated ? (
                             <Button onClick={handleLogout} >
                                 Log out
-                                {adminName && <UserInfo>{adminName}</UserInfo>}
+                                {userName && <UserInfo>{userName}</UserInfo>}
                             </Button>
                         ) : (
                             <Button variant="primary" onClick={() => navigate('/login')}>
@@ -317,14 +331,15 @@ const Header1 = ({ adminName, children }) => {
                         <>
                             <StyledNavLink to="/dashboard" onClick={() => setMobileMenuOpen(false)}>Dashboard</StyledNavLink>
                             <StyledNavLink to="/favorites" onClick={() => setMobileMenuOpen(false)}>Favorites</StyledNavLink>
-                        </>
-                            //<StyledNavLink to="/admin" onClick={() => setMobileMenuOpen(false)}>Admin</StyledNavLink>
-                    )}
+                            {isAdmin && (
+                                <StyledNavLink to="/admin" onClick={() => setMobileMenuOpen(false)}>Admin</StyledNavLink>
+                            )}
+                        </>)}
                     <StyledNavLink to="/about" onClick={() => setMobileMenuOpen(false)}>About</StyledNavLink>
                     {isAuthenticated ? (
                         <Button onClick={() => { handleLogout(); setMobileMenuOpen(false); }}>
                             Log out
-                            {adminName && <UserInfo>{adminName}</UserInfo>}
+                            {userName && <UserInfo>{userName}</UserInfo>}
                         </Button>
                     ) : (
                         <Button

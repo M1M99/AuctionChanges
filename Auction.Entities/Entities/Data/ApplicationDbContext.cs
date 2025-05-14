@@ -15,7 +15,9 @@ namespace FinalAspReactAuction.Server.Data
         public DbSet<Model> Models { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<CustomIdentityUser> Users { get; set; }
+        public DbSet<Bid> Bids { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
