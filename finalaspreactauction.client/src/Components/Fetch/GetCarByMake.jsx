@@ -3,8 +3,6 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "./../Page/Header";
 import GetPP from "./GetPricePerformanceCars";
-import Footer from "../Page/Footer";
-import Footer1 from "../../Components/Example/Example11";
 import { useNavigate } from 'react-router-dom';
 
 const GetCarByMake = () => {

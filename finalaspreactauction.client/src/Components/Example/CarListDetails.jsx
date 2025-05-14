@@ -10,7 +10,7 @@ import { faSearchengin } from '@fortawesome/free-brands-svg-icons';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../Fetch/Loading';
 import UpdateCarForm from '../Admin/Update';
-import BookmarkToggle from '../Example/Bookmark';
+import BookmarkToggle from './Bookmark';
 
 const CarList22 = () => {
     const [cars, setCars] = useState([]);
@@ -19,6 +19,7 @@ const CarList22 = () => {
     const [search, setSearch] = useState('');
     const [userrole, setUserRole] = useState('');
     const [carIdToUpdate, setCarIdToUpdate] = useState(null);
+    const [userId, setUserId] = useState('');
     const [selectedCarDetails, setSelectedCarDetails] = useState(null);
     const [openEditInput, setOpenEditInput] = useState(false);
     const [editBtn, setEditBtn] = useState(false);
@@ -34,7 +35,7 @@ const CarList22 = () => {
                     fetch(`${API_BASE_URL}/Brand/GetAll`),
                     fetch(`${API_BASE_URL}/Model/GetAllModel`)
                 ]);
-
+                    
                 const [carsData, makesData, modelsData] = await Promise.all([
                     carsRes.json(),
                     makesRes.json(),
@@ -61,6 +62,7 @@ const CarList22 = () => {
             try {
                 const decoded = jwtDecode(token);
                 const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+                setUserId(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]);
                 setUserRole(role);
             } catch (error) {
                 console.error("Error decoding token:", error);
@@ -113,8 +115,8 @@ const CarList22 = () => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="flex items-center bg-white rounded-lg shadow-sm p-4 mb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-3 lg:px-8 pb-4">
+            <div className="flex items-center bg-white rounded-lg shadow-sm p-4 mb-4">
                 {userrole === "Admin" && (
                     <button
                         onClick={() => setEditBtn(!editBtn)}
@@ -123,7 +125,7 @@ const CarList22 = () => {
                         <FontAwesomeIcon icon={faPenToSquare} className="w-6 h-6" />
                     </button>
                 )}
-                <FontAwesomeIcon icon={faSearchengin} className="w-6 h-6 text-gray-500 mr-3" />
+                <FontAwesomeIcon icon={faSearchengin} className="w-6 h-6 text-gray-500 me-3" />
                 <input
                     type="text"
                     placeholder="Search cars..."
@@ -144,7 +146,7 @@ const CarList22 = () => {
                             <img
                                 src={car.imageUrl}
                                 alt={`${getMakeName(car.makeId)} ${getModelName(car.modelId)}`}
-                                className="w-full h-48 object-cover cursor-pointer"
+                                className="w-full h-48 object-cover cursor-pointer custom-h-58"
                                 onClick={() => handleCarClick(car.id)}
                             />
                             <div className="p-4">
@@ -154,7 +156,7 @@ const CarList22 = () => {
                                 >
                                     {getMakeName(car.makeId)} {getModelName(car.modelId)} {car.year}
                                 </h3>
-                                <div className="space-y-2 text-sm text-gray-600">
+                                <div className="space-y-2 text-sm text-gray-600" style={{paddingLeft:"10px"}}>
                                     <p><span className="font-medium">Damage:</span> {car.damage}</p>
                                     <p><span className="font-medium">Fuel:</span> {car.fuelType}</p>
                                     <p><span className="font-medium">Mileage:</span> {car.otometer}</p>
@@ -162,10 +164,9 @@ const CarList22 = () => {
                                     <p><span className="font-medium">VIN:</span> {car.vin}</p>
                                     <p><span className="font-medium">Engine:</span> {car.engine}L</p>
                                 </div>
-
                                 {userrole !== "Admin" && (
-                                    <div className="mt-4">
-                                        <BookmarkToggle />
+                                    <div className="mt-4 px-2">
+                                        <BookmarkToggle carId={car.id} userId={userId} />
                                     </div>
                                 )}
 

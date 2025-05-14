@@ -248,7 +248,7 @@ const NavLinks = ({ isAuthenticated }) => {
     return (
         <NavLinksContainer>
             <StyledNavLink to="/">Home</StyledNavLink>
-            <StyledNavLink to="/auction">Auctions</StyledNavLink>
+            <StyledNavLink to="/auctionVehicles">Auctions</StyledNavLink>
             {isAuthenticated && (
                 <>
                     <StyledNavLink to="/dashboard" id="dashboard">Dashboard</StyledNavLink>
@@ -326,7 +326,7 @@ const Header1 = ({children }) => {
 
                 <MobileMenu isOpen={mobileMenuOpen}>
                     <StyledNavLink to="/" onClick={() => setMobileMenuOpen(false)}>Home</StyledNavLink>
-                    <StyledNavLink to="/auction" onClick={() => setMobileMenuOpen(false)}>Auctions</StyledNavLink>
+                    <StyledNavLink to="/auctionVehicles" onClick={() => setMobileMenuOpen(false)}>Auctions</StyledNavLink>
                     {isAuthenticated && (
                         <>
                             <StyledNavLink to="/dashboard" onClick={() => setMobileMenuOpen(false)}>Dashboard</StyledNavLink>

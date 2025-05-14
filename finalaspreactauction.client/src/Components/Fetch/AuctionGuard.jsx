@@ -34,7 +34,7 @@ const AuctionGuard = ({ children }) => {
         checkTime();
     }, [id]);
 
-    if (loading) return <div>Yükleniyor...</div>;
+    if (loading) return <div>Loading...</div>;
 
     return isAllowed ? children : <Navigate to="/404" />;
 };

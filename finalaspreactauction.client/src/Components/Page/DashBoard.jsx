@@ -7,11 +7,13 @@ const Dashboard = () => {
     const { userId } = useAuth();
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100" style={{ marginTop: "-10px" }}>
             <AuthProvider>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
                     <div className="mb-8">
-                        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+                        <h1 className="text-3xl" id="dashBoard1" style={{
+                            fontWeight: "bold"
+                        }}>Dashboard</h1>
                         <p className="mt-2 text-gray-600">Manage your favorites and account settings</p>
                     </div>
 

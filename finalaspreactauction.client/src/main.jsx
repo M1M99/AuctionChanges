@@ -12,14 +12,10 @@ import NotFound from './Components/Page/NotFound';
 import GetCarByMake from './Components/Fetch/GetCarByMake';
 import UpdateMakeForm from './Components/Admin/UpdateMake';
 import UpdateModelForm from './Components/Admin/UpdateModel';
-import ResponsiveAutoExample from './Components/Example/ResponsiveAutoExample';
 import ExitAnimation from './Components/Example/Animation';
-import GetCarById from './Components/Fetch/GetCarById';
 import { Link } from 'react-router-dom';
 import ForAdmin from './Components/Example/ForAdmin';
 import ChatBotWithAI from './Components/Example/ChatGPTComponent';
-import Header from './Components/Page/Header';
-import Footer from './Components/Example/Example11';
 import { jwtDecode } from "jwt-decode";
 import { Navigate } from 'react-router-dom';
 import AboutPage from './Components/Page/AboutPage';
@@ -35,6 +31,8 @@ import CarDetailPage from './Components/Fetch/GetCarById';
 import VehicleGallery from './Components/Auction/VehicleGallery';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import AuctionGuard from './Components/Fetch/AuctionGuard';
+import Footer from './Components/Page/AppFooter';
+import CarList22 from './Components/Example/CarListDetails';
 
 
 const button = {
@@ -90,6 +88,7 @@ function AppRoutes() {
             <Routes>
                 <Route path="/" element={<App />} />
                 <Route path="/login" element={<Account />} />
+                <Route path="/auctionVehicles" element={<CarList22 />} />
                 <Route path="/auction" element={<Navigate to="/auction/1" replace />} />
                 <Route path="/auction/:id" element={
                     <AuctionProvider>

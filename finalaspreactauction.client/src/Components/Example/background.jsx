@@ -18,9 +18,6 @@ const Pattern = () => {
 }
 
 const StyledWrapper = styled.div`
-  /*
-  More comprehensive version at shenanigans.shoghisimon.ca/collection/css-rain-bg/
-   */
 
   .container {
     position: absolute;

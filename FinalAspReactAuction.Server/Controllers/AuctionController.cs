@@ -50,21 +50,20 @@ namespace AuctionApi.Controllers
             _context = context;
         }
 
-        // 1. Açık artırmayı başlat (POST)
+        // 1. start (POST)
         [HttpPost("start")]
         public async Task<IActionResult> StartAuction([FromBody] Vehicle vehicle)
         {
             if (vehicle == null)
                 return BadRequest("Vehicle is required to start the auction.");
 
-            // Araç verisini veritabanına kaydet (Örneğin: Auction başlatma işlemi)
             _context.Vehicles.Add(vehicle);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetVehicle), new { id = vehicle.Id }, vehicle);
         }
 
-        // 2. Teklif ekleme (POST)
+        // 2. offer (POST)
         [HttpPost("placebid")]
         public async Task<IActionResult> PlaceBid([FromBody] Bid bid)
         {
@@ -78,15 +77,14 @@ namespace AuctionApi.Controllers
             if (bid.Amount <= vehicle.CurrentBid)
                 return BadRequest("Bid must be higher than the current bid.");
 
-            // Yeni teklifi kaydet
             _context.Bids.Add(bid);
-            vehicle.CurrentBid = bid.Amount; // Teklif güncelleniyor
+            vehicle.CurrentBid = bid.Amount;
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Bid placed successfully.", bid });
         }
 
-        // 3. Teklif geçmişini alma (GET)
+        // 3. offer hıstory (GET)
         [HttpGet("bidhistory/{vehicleId}")]
         public async Task<IActionResult> GetBidHistory(int vehicleId)
         {
@@ -102,7 +100,7 @@ namespace AuctionApi.Controllers
             return Ok(bidHistory);
         }
 
-        // 4. Açık artırmayı bitirme (POST)
+        // 4. end of auc(POST)
         [HttpPost("end")]
         public async Task<IActionResult> EndAuction([FromBody] int vehicleId)
         {
@@ -117,7 +115,6 @@ namespace AuctionApi.Controllers
             return Ok(new { message = "Auction ended successfully.", vehicle });
         }
 
-        // 5. Araç bilgilerini alma (GET)
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVehicle(int id)
         {
@@ -128,7 +125,5 @@ namespace AuctionApi.Controllers
             return Ok(vehicle);
         }
     }
-
-    // Teklif (Bid) Modeli
 
 }

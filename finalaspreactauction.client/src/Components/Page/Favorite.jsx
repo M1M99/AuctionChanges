@@ -7,8 +7,6 @@ const Favorites = ({ userId }) => {
     const [carDetails, setCarDetails] = useState([]);
     const navigate = useNavigate();
     useEffect(() => {
-        //setFavorites([]);
-        //setCarDetails([]);
         if (!userId) return;
 
         axios.get(`https://localhost:7038/api/Favorite/GetAll`, {
@@ -46,7 +44,7 @@ const Favorites = ({ userId }) => {
     
     return (
         <div className="max-w-5xl mx-auto p-4">
-            <h1 className="text-3xl font-bold mb-6 text-center text-blue-600" style={{ fontFamily:"" }}>Your Favorite Cars</h1>
+            <h1 className="mb-2 text-center" style={{ fontWeight: "bold" }}>Your Favorite Cars</h1>
 
             {carDetails.length === 0 ? (
                 <p className="text-gray-500 text-center" style={{ marginBottom: "10vw" }}>No favorite cars found.</p>

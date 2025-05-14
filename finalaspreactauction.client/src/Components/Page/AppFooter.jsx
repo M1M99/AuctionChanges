@@ -85,7 +85,7 @@ const Footer = () => {
                     </QRCodeContainer>
                 </ContentWrapper>
 
-                <div className="text-center text-sm text-gray-400 mt-8 pb-6">
+                <div className="text-center text-sm text-gray-400 mt-1">
                     <p className="flex justify-center items-center gap-1">
                         <Copyright className="h-4 w-4" />
                         {new Date().getFullYear()} Auction. All rights reserved.

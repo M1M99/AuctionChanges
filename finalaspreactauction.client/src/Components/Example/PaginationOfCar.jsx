@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 
-export default function Example() {
+export default function Pagination() {
     const [cars, setCars] = useState([]);  
     const [totalCars, setTotalCars] = useState(0); 
     const [currentPage, setCurrentPage] = useState(1); 

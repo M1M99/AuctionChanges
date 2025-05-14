@@ -372,7 +372,7 @@ button:focus-visible {
     /*background-image: url("assets/pexels-nerdnonsense-23522813.jpg");*/
 }
 /*#container :hover {
-        background-color: #f0f0f0;*/ /* Fareyle üzerine gelince renk deðiþsin */
+        background-color: #f0f0f0;*/
 /*box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
     }*/
 
@@ -1236,4 +1236,14 @@ th {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+}
+
+@media (min-width: 550px) and (max-width: 768px) {
+    .custom-h-58 {
+        height: 16rem;
+    }
+}
+
+#dashBoard1 {
+    font-family:Arial;
 }

@@ -10,16 +10,9 @@ const Card = () => {
                     <div className="body">
                         <div className="phone">
                             <div className="menu">
-                                <div className="time">4:20</div>
-                                <div className="icons">
-                                    <div className="network" />
-                                    <div className="battery" />
-                                </div>
                             </div>
                             <div className="content">
-                                <div className="circle">
-                                    <div className="crescent" />
-                                </div>
+                             
                                 <label htmlFor="switch">
                                     <div className="toggle" />
                                     <div className="names">
@@ -37,8 +30,6 @@ const Card = () => {
 }
 
 const StyledWrapper = styled.div`
-  /* GENERAL */
-
   .credit {
     position: fixed;
     right: 2rem;
@@ -64,7 +55,6 @@ const StyledWrapper = styled.div`
     transform: translate(-50%, -70%)
   }
 
-  /* Phone */
   .phone {
     position: relative;
     z-index: 2;
@@ -85,7 +75,6 @@ const StyledWrapper = styled.div`
 
 
 
-  /* Top */
   .menu {
   /*   background-color: blue; */
     font-size: 80%;
@@ -127,7 +116,6 @@ const StyledWrapper = styled.div`
     margin: .12rem .5rem;
   }
 
-  /* Middle */
   .content {
     display: -webkit-box;
     display: -ms-flexbox;
