@@ -2,6 +2,7 @@ import React from 'react';
 import { AuthProvider, useAuth } from "../Example/AuthContext";
 import Favorites from "./Favorite";
 import { User, Heart, Settings } from 'lucide-react';
+import VehiclesWonAtBit from '../Fetch/WonAtBid';
 
 const Dashboard = () => {
     const { userId } = useAuth();
@@ -40,6 +41,7 @@ const Dashboard = () => {
                                         <span className="text-gray-700">Account Settings</span>
                                     </div>
                                 </div>
+                            <VehiclesWonAtBit />
                             </div>
                         </div>
                     </div>

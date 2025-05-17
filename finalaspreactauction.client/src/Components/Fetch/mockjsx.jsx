@@ -20,7 +20,7 @@
                 startingBid: 0,
                 reservePrice: null,
                 buyNowPrice: data.price ?? mockVehicleData.buyNowPrice,
-                timeRemaining: data.tineBid ?? 10,
+                timeRemaining: data.tineBid ?? 30,
                 location: data.country ?? mockVehicleData.location,
                 seller: 'Auction',
                 condition: 'Used',

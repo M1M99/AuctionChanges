@@ -4,6 +4,8 @@ import { HubConnectionBuilder } from '@microsoft/signalr';
 import { mockBidHistory } from '../../Components/Auction/mockData';
 import { fetchVehicleDataAndMergeToMock } from '../Fetch/mockjsx';
 import { useParams } from 'react-router-dom';
+import { useAuth } from './../Example/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const AuctionContext = createContext();
 
@@ -19,8 +21,11 @@ export function AuctionProvider({ children }) {
     const [connection, setConnection] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const [winSubmitted, setWinSubmitted] = useState(false);
+    const { userId, userName } = useAuth();
+    const navigate = useNavigate();
     const { id } = useParams();
+
     useEffect(() => {
         const loadVehicleData = async () => {
             try {
@@ -36,44 +41,79 @@ export function AuctionProvider({ children }) {
                 setLoading(false);
             }
         };
-
         loadVehicleData();
-    }, []);
-
-
+    }, [id]);
 
     useEffect(() => {
+        if (userId == null) {
+            navigate("/#", { state: { alert: "Please First Sign In" } });
+            return;
+        }
+        
         const conn = new HubConnectionBuilder()
             .withUrl('https://localhost:7038/auctionHub')
             .withAutomaticReconnect()
             .build();
 
+        conn.start()
+            .then(() => console.log('SignalR connected'))
+            .catch(err => console.error('SignalR connection error:', err));
+
         setConnection(conn);
 
-        conn.start().then(() => {
-            console.log('SignalR connected');
-        }).catch(err => console.error('SignalR connection error:', err));
-
         conn.on('ReceiveBid', (bidder, bidAmount) => {
-            console.log('New bid received:', bidder, bidAmount);
             setCurrentBid(bidAmount);
-            setIsUserHighBidder(false);
-            setBidStatus('outbid');
+            setIsUserHighBidder(bidder === userName);
+            setBidStatus(bidder === userName ? 'success' : 'outbid');
             setBidHistory(prev => [
-                { id: Date.now(), amount: bidAmount, bidder, time: new Date().toISOString(), isUser: false },
+                { id: Date.now(), amount: bidAmount, bidder, time: new Date().toISOString(), isUser: bidder === userName },
                 ...prev
             ]);
             setTimeout(() => setBidStatus(null), 3000);
         });
 
-        return () => conn.stop();
-    }, []);
+        return () => {
+            conn.off('ReceiveBid');
+            conn.off('Error');
+            conn.stop();
+        };
+    }, [userId, userName, navigate]);
 
     useEffect(() => {
         if (vehicle) {
             setNextBid(currentBid + vehicle.bidIncrement);
         }
     }, [currentBid, vehicle]);
+
+    useEffect(() => {
+        if (timeRemaining === 0 && isUserHighBidder && vehicle && !winSubmitted) {
+            const winnerData = {
+                userId: userId,
+                carId: vehicle.id
+            };
+
+            setWinSubmitted(true); // Mark as submitted before making the request
+
+            fetch('https://localhost:7038/api/Winner', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(winnerData)
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error('Failed to submit winner');
+                    return res.text();
+                })
+                .then(data => {
+                    console.log('Winner recorded successfully:', data);
+                })
+                .catch(err => {
+                    console.error('Error recording winner:', err);
+                    setWinSubmitted(false); // Reset if submission failed
+                });
+        }
+    }, [timeRemaining, isUserHighBidder, vehicle, userId, winSubmitted]);
 
     useEffect(() => {
         if (timeRemaining <= 0) return;
@@ -104,17 +144,15 @@ export function AuctionProvider({ children }) {
         setIsUserHighBidder(true);
         setBidStatus('success');
 
-        if (connection.state === 'Connected') {
-            connection.invoke('PlaceBid', 'You', numericBid)
-                .catch(err => {
-                    console.error('Error sending bid:', err);
-                });
+        if (connection && connection.state === 'Connected') {
+            connection.invoke('PlaceBid', userName, numericBid)
+                .catch(err => console.error('Error sending bid:', err));
         }
 
         const newBid = {
-            id: Date.now(),
+            id: userId,
             amount: numericBid,
-            bidder: 'You',
+            bidder: userName,
             time: new Date().toISOString(),
             isUser: true
         };
@@ -161,7 +199,9 @@ export function AuctionProvider({ children }) {
         setInputBid,
         placeBid,
         formatTimeRemaining,
-        formatCurrency
+        formatCurrency,
+        loading,
+        error
     };
 
     return (
@@ -182,3 +222,5 @@ export function useAuction() {
     }
     return context;
 }
+
+export default AuctionProvider;

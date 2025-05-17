@@ -111,7 +111,7 @@ const CarList22 = () => {
     };
 
     const handleCarClick = (carId) => {
-        navigate(`/car/${carId}`);
+        navigate(`/auction/${carId}`);
     };
 
     return (
